@@ -139,9 +139,7 @@ main {
   animation: marquee 38s linear infinite;
 }
 
-.marquee-track:hover {
-  animation-play-state: paused;
-}
+
 
 /* Custom font styles to mimic the screenshot's premium look */
 h1 {

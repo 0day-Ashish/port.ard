@@ -8,8 +8,10 @@ import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
 import ServicesSection from "@/components/ServicesSection";
 import ConnectSection from "@/components/ConnectSection";
+import ManifestoSection from "@/components/ManifestoSection";
 import TextType from "@/components/TextType";
 import Footer from "@/components/Footer";
+
 
 // Defined OUTSIDE Home so React never unmounts/remounts it on state changes
 const HeroText = ({
@@ -137,8 +139,9 @@ export default function Home() {
         <AboutSection />
         <ProjectsSection />
         <ServicesSection />
+        <ManifestoSection />
         <ConnectSection />
-        <section className="relative z-10 w-full bg-white py-20 md:py-28 flex items-center justify-center">
+          <section className="relative z-10 w-full bg-white py-4 md:py-6 flex items-center justify-center mb-50 -mt-50">
           <TextType
             text={["LET'S MAKE DESIGN", "YOU WANT TO CLICK"]}
             typingSpeed={75}
@@ -147,7 +150,7 @@ export default function Home() {
             cursorCharacter="|"
             deletingSpeed={50}
             cursorBlinkDuration={0.5}
-            className="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-tighter text-center text-zinc-900 px-4"
+            className="text-4xl md:text-6xl lg:text-9xl uppercase font-semibold text-center text-zinc-900 px-4"
           />
         </section>
         <Footer />

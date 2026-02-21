@@ -16,24 +16,24 @@ const ConnectSection = () => {
   return (
     <section
       id="get-in-touch"
-      className="relative z-10 w-full min-h-screen bg-white flex flex-col justify-center"
+      className="relative z-10 w-full min-h-screen bg-white flex flex-col justify-start"
     >
-      <div className="px-8 md:px-16 py-16 md:py-24 max-w-6xl mx-auto w-full">
+      <div className="px-8 md:px-12 pt-8 md:pt-12 max-w-6xl ml-4 md:ml-16 w-full">
         {/* Two columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
+        <div className="grid grid-cols-1 md:[grid-template-columns:60%_60%] items-start">
           {/* Left: Connect label + LET'S TALK ABOUT + dropdown */}
-          <div className="flex flex-col gap-6">
-            <p className="text-zinc-500 uppercase tracking-widest text-xs font-semibold">
+          <div className="flex flex-col -mt-6 md:-mt-12">
+            <p className="text-zinc-500 uppercase tracking-widest text-sm font-semibold">
               Connect
             </p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-zinc-900">
+            <h2 className="text-4xl md:text-6xl lg:text-6xl uppercase font-black text-zinc-900">
               Let&apos;s talk about
             </h2>
             <div className="relative mt-2">
               <select
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                className="w-full bg-transparent text-zinc-900 font-medium text-base md:text-lg appearance-none cursor-pointer pr-8 py-3 border-0 border-b border-zinc-300 focus:border-zinc-900 focus:outline-none focus:ring-0"
+                className="w-full bg-transparent text-zinc-900 font-medium text-lg md:text-xl appearance-none cursor-pointer pr-8 py-4 border-0 border-b border-zinc-300 focus:border-zinc-900 focus:outline-none focus:ring-0"
                 aria-label="Select topic"
               >
                 <option value="" disabled>
@@ -63,8 +63,8 @@ const ConnectSection = () => {
           </div>
 
           {/* Right: MY EMAIL TO CONTACT + email input + MAKE DESIGN → */}
-          <div className="flex flex-col gap-6">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-black uppercase tracking-tighter text-zinc-900 md:mt-10">
+          <div className="flex flex-col gap-6 mt-10 md:mt-42">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl uppercase font-black text-zinc-900 md:mt-10">
               My email to contact
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-stretch sm:items-end mt-2">
@@ -74,13 +74,13 @@ const ConnectSection = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email"
-                  className="w-full bg-transparent text-zinc-900 font-medium text-base md:text-lg py-3 border-0 focus:outline-none focus:ring-0 placeholder:text-zinc-400"
+                  className="w-full bg-transparent text-zinc-900 font-medium text-lg md:text-xl py-4 border-0 focus:outline-none focus:ring-0 placeholder:text-zinc-400"
                   aria-label="Your email"
                 />
               </div>
               <button
                 type="button"
-                className="shrink-0 flex items-center gap-2 text-zinc-900 font-black uppercase tracking-tight text-sm md:text-base hover:opacity-70 transition-opacity py-3 border-b border-transparent hover:border-zinc-900"
+                className="shrink-0 flex items-center gap-2 text-zinc-900 font-black uppercase  text-xl md:text-base"
                 aria-label="Submit design request"
               >
                 Make design

@@ -25,26 +25,26 @@ const Footer = () => {
   }, []);
 
   return (
-    <footer className="relative z-10 w-full min-h-[36vh] bg-zinc-950 text-white flex flex-col">
+    <footer className="relative z-10 w-full min-h-[40vh] bg-zinc-950 text-white flex flex-col">
       {/* Top bar: location + time */}
-      <div className="flex justify-between items-center px-8 md:px-16 py-5 md:py-6 text-sm text-white/70">
+      <div className="flex justify-between items-center px-8 md:px-16 py-1 md:py-2 text-lg text-white/70">
         <span>Located in India</span>
         {time && <span>{time}</span>}
       </div>
 
       {/* Middle: contact links — Telegram left, Email center, LinkedIn right */}
-      <div className="flex flex-1 items-center justify-between px-8 md:px-16 py-12 md:py-16 w-full">
+      <div className="flex flex-1 items-center justify-between px-8 md:px-16 py-4 md:py-6 w-full">
         <a
           href="https://t.me/yourhandle"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-black uppercase tracking-tight text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
+          className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
         >
           Telegram
         </a>
         <a
           href="mailto:hello@ard.dev"
-          className="font-black uppercase tracking-tight text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
+          className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
         >
           Email
         </a>
@@ -52,7 +52,7 @@ const Footer = () => {
           href="https://linkedin.com/in/yourprofile"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-black uppercase tracking-tight text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
+          className="font-black uppercase text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
         >
           LinkedIn
         </a>
@@ -60,7 +60,7 @@ const Footer = () => {
 
       {/* Bottom: auto-moving marquee */}
       <div className="overflow-hidden shrink-0">
-        <div className="flex py-4 md:py-6 marquee-track">
+        <div className="flex py-1 md:py-2 marquee-track mb-15">
           <span className="marquee-content flex shrink-0 items-center gap-8 pr-8 font-black  text-base md:text-3xl lg:text-5xl text-white/90 whitespace-nowrap">
             {[...Array(8)].map((_, i) => (
               <span key={i}>{MARQUEE_TEXT}</span>
