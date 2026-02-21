@@ -13,6 +13,7 @@ export const metadata: Metadata = {
 };
 
 import CustomCursor from "@/components/CustomCursor";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export default function RootLayout({
   children,
@@ -24,8 +25,10 @@ export default function RootLayout({
       <body
         className={`${clashGrotesk.variable} antialiased`}
       >
-        <CustomCursor />
-        {children}
+        <SmoothScroll>
+          <CustomCursor />
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

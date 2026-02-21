@@ -6,15 +6,18 @@
 
 @layer base {
 
+  html {
+    scroll-behavior: initial !important;
+  }
+
   html,
   body {
     margin: 0 !important;
     padding: 0 !important;
     border: none !important;
     cursor: none !important;
-    height: 100%;
-    width: 100%;
     overflow-x: hidden;
+    height: auto !important;
   }
 
   body {

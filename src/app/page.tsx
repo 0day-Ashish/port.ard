@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import ScrambledText from "@/components/ScrambledText";
+import AboutSection from "@/components/AboutSection";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -51,7 +52,7 @@ export default function Home() {
         </div>
       )}
 
-      <main className="relative min-h-screen w-full bg-white overflow-hidden top-0 left-0">
+      <main className="relative min-h-screen w-full bg-white top-0 left-0">
         {/* 1. Base Layer: Black text visible on the right side */}
         <div className="absolute inset-0 z-0">
           <HeroText color="text-black" />
@@ -96,13 +97,15 @@ export default function Home() {
                 <span className="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] block animate-pulse-glow"></span>
               </div>
               <p className="text-zinc-500 text-lg leading-relaxed font-medium text-left">
-                I'm Valeriia Shchebetovska. <br />
-                I build high-performing low-code websites <br />
+                I'm Ashish . <br />
+                I build high-performing websites for people<br />
                 that launch fast, look premium, and convert with impact.
               </p>
             </div>
           </div>
         </div>
+
+        <AboutSection />
       </main>
     </>
   );
