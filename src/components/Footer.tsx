@@ -35,21 +35,21 @@ const Footer = () => {
       {/* Middle: contact links — Telegram left, Email center, LinkedIn right */}
       <div className="flex flex-1 items-center justify-between px-8 md:px-16 py-4 md:py-6 w-full">
         <a
-          href="https://t.me/yourhandle"
+          href="https://instagram.com/ashishh_rd_"
           target="_blank"
           rel="noopener noreferrer"
           className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
         >
-          Telegram
+          Instagram
         </a>
         <a
-          href="mailto:hello@ard.dev"
+          href="mailto:0day.ashish@gmail.com"
           className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
         >
           Email
         </a>
         <a
-          href="https://linkedin.com/in/yourprofile"
+          href="https://linkedin.com/in/arddev/"
           target="_blank"
           rel="noopener noreferrer"
           className="font-black uppercase text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"

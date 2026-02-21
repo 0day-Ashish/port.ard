@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/next"
 
 const clashGrotesk = localFont({
   src: "../../public/fonts/ClashGrotesk-Variable.ttf",
@@ -27,6 +29,8 @@ export default function RootLayout({
       >
         <SmoothScroll>
           <CustomCursor />
+          <SpeedInsights/>
+          <Analytics/>
           {children}
         </SmoothScroll>
       </body>
