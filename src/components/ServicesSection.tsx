@@ -51,93 +51,93 @@ const services = [
   },
 ];
 
-const NUM_CARDS = 4;
-const CARD_HEIGHT_VH = 75;
-const COLUMN_HEIGHT_VH = NUM_CARDS * CARD_HEIGHT_VH;
-// Small viewport height so column scrolls well past the last card
-const VIEWPORT_CONTENT_VH = 60;
-// Extra push so last card is fully off-screen before Connect section
-const EXTRA_PUSH_VH = 50;
-const SECTION_HEIGHT_VH = COLUMN_HEIGHT_VH + 120;
-
 const ServicesSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const pinRef = useRef<HTMLDivElement>(null);
-  const cardsColumnRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLDivElement | null>(null);
+  const titleRefs = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    if (!sectionRef.current || !pinRef.current || !cardsColumnRef.current)
-      return;
+    if (!sectionRef.current) return;
 
-    const section = sectionRef.current;
-    const pin = pinRef.current;
-    const cardsColumn = cardsColumnRef.current;
+    const items = titleRefs.current.slice(0, services.length);
+    const vh = window.innerHeight;
 
-    const maxTranslateVh = Math.max(0, COLUMN_HEIGHT_VH - VIEWPORT_CONTENT_VH);
-    const totalTranslateVh = maxTranslateVh + EXTRA_PUSH_VH;
+    // Place each title far below initially (stacked by viewport) so they animate into a compact stack
+    items.forEach((el, i) => {
+      gsap.set(el, { y: i * vh });
+    });
 
-    // Single ScrollTrigger: pin the viewport and scrub the cards column (keeps them in sync)
-    const st = ScrollTrigger.create({
-      trigger: section,
-      start: "top top",
-      end: "bottom bottom",
-      pin: pin,
-      pinSpacing: false,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const y = -progress * totalTranslateVh;
-        gsap.set(cardsColumn, { y: `${y}vh` });
+    // Measure title height to compute a tighter scroll area
+    const compactHeight = items[0]?.getBoundingClientRect().height ?? 80;
+    const gap = 8; // px between stacked titles
+    // total scroll height: viewport + extra space needed to compress all titles into the compact stack
+    const totalScroll = vh + (compactHeight + gap) * (services.length - 1);
+
+    // Give the section the exact scroll space needed (prevents excessive white space after the section)
+    sectionRef.current.style.height = `${Math.round(totalScroll)}px`;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: sectionRef.current,
+        start: "top top",
+        end: `+=${Math.round(totalScroll)}`,
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
       },
     });
 
-    // Refresh after layout so Lenis + ScrollTrigger positions are correct
-    const refresh = () => ScrollTrigger.refresh();
-    const t = setTimeout(refresh, 150);
+    // Animate titles from big gaps → compact stacked column. Stagger makes them appear one-by-one.
+    // Use a smaller gap between stacked titles for a tighter look.
+    tl.to(items, {
+      y: (i) => i * (compactHeight + gap),
+      ease: "none",
+      stagger: { each: 0.5, from: "start" },
+    });
 
     return () => {
-      clearTimeout(t);
-      st.kill();
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+      tl.kill();
+      // reset inline height
+      if (sectionRef.current) sectionRef.current.style.height = "";
     };
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="services"
-      className="relative w-full bg-white z-0"
-      style={{ height: `${SECTION_HEIGHT_VH}vh` }}
-    >
-      <div
-        ref={pinRef}
-        className="relative w-full flex flex-col bg-white"
-        style={{ height: "100vh" }}
-      >
-        <header className="shrink-0 border-b border-black px-8 md:px-16 py-6 md:py-8">
-          <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black">
-            Services
-          </h2>
-        </header>
-
-        <div
-          className="flex-1 overflow-hidden"
-          style={{ minHeight: 0 }}
-        >
-          <div
-            ref={cardsColumnRef}
-            className="w-full will-change-transform border-t border-black"
-            style={{ height: `${COLUMN_HEIGHT_VH}vh` }}
-          >
-            {services.map((service, i) => (
-              <div
-                key={service.title}
-                className="shrink-0 border-b border-black bg-white flex flex-col justify-center items-center px-8 md:px-16"
-                style={{ height: `${CARD_HEIGHT_VH}vh`, paddingTop: "8vh", paddingBottom: "8vh" }}
-              >
-                <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter text-black text-center">
-                  {service.title}
-                </h3>
+    <section id="services" className="w-full bg-white">
+      <div ref={sectionRef} className="relative w-full">
+        <div className="sticky top-0 h-screen w-full flex items-start">
+          <div className="w-full px-6 md:px-12">
+            <div className="max-w-6xl mx-auto">
+              {/* Heading moved inside the pinned area so it remains visible while items stack */}
+              <div className="pb-6 border-b border-black mb-6">
+                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black">
+                  Services
+                </h2>
               </div>
-            ))}
+
+              {/* Overlay container: titles are absolutely positioned layers that GSAP will move into a stacked layout */}
+              <div className="relative w-full h-screen">
+                {services.map((service, i) => (
+                  <div
+                    key={service.title}
+                    ref={(el) => {
+                      if (!el) return;
+                      titleRefs.current[i] = el;
+                    }}
+                    className="absolute left-0 top-0 w-full bg-white"
+                    style={{ willChange: "transform, opacity", zIndex: services.length - i }}
+                  >
+                    <div className="py-8 md:py-10 px-0 md:px-0">
+                      <h3 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-black">
+                        {service.title}
+                      </h3>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* descriptions removed — only titles are stacked now */}
+            </div>
           </div>
         </div>
       </div>
