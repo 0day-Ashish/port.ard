@@ -119,6 +119,30 @@ main {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+.animate-reveal {
+  animation: reveal-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Footer marquee: infinite horizontal scroll */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 /* Custom font styles to mimic the screenshot's premium look */
 h1 {
   @apply tracking-[-0.05em] uppercase font-[900] m-0 p-0;
