@@ -59,7 +59,7 @@ const ManifestoSection = () => {
                   className="flex items-center justify-start opacity-0"
                   style={{ transform: "translateY(-40px)" }}
                 >
-                  <h1 className="m-0 text-[10vw] md:text-[6.5vw] lg:text-[5.5vw] leading-[0.9] font-[900] uppercase tracking-[-0.03em] text-zinc-900">
+                  <h1 className="m-0 text-[10vw] md:text-[6.5vw] lg:text-[5.5vw] leading-[0.9] font-black uppercase tracking-[-0.03em] text-zinc-900">
                     {word}
                   </h1>
                 </div>

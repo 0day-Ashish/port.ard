@@ -37,7 +37,7 @@ const HeroText = ({
       className={`pointer-events-none absolute inset-0 flex flex-col justify-start pt-0 ${color} ${className}`}
     >
       <div className="w-full px-4">
-        <h1 className="text-[10vw] leading-[0.8] flex flex-col w-full tracking-[-0.05em] uppercase m-0 p-0 font-[900]">
+        <h1 className="text-[10vw] leading-[0.8] flex flex-col w-full tracking-[-0.05em] uppercase m-0 p-0 font-black">
           <span className="block text-right mr-5">DESIGNER</span>
           <div className="flex justify-end w-full">
             <span
@@ -63,7 +63,7 @@ export default function Home() {
   const navMap: Record<string, string> = {
     HOME: "#home",
     ME: "#about",
-    PORTFOLIO: "#portfolio",
+    PORTFOLIO: "/portfolio",
     SERVICES: "#services",
     "GET IN TOUCH": "#get-in-touch",
   };
@@ -84,7 +84,7 @@ export default function Home() {
       {/* Loading Overlay */}
       {loading && (
         <div
-          className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#111] text-white transition-opacity duration-800 ${isFadingOut ? "opacity-0" : "opacity-100"}`}
+          className={`fixed inset-0 z-100 flex flex-col items-center justify-center bg-[#111] text-white transition-opacity duration-800 ${isFadingOut ? "opacity-0" : "opacity-100"}`}
         >
           <div className="text-sm tracking-[0.3em] opacity-80 uppercase animate-fade-up">
             ard.dev © est. 2026
@@ -113,7 +113,7 @@ export default function Home() {
             </div>
 
             {/* White Text precisely clipped to this 50vw container */}
-            <div className="absolute inset-0 w-[100vw] pointer-events-none">
+            <div className="absolute inset-0 w-screen pointer-events-none">
               <HeroText color="text-white" startAnimate={startAnimate} />
             </div>
 

@@ -4,15 +4,45 @@ import { useEffect, useRef } from "react";
 
 const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
+  const isProjectRef = useRef(false);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+      if (!cursorRef.current) return;
+      const el = cursorRef.current;
+      const r = isProjectRef.current ? 64 : 12; // radius for centering
+      const x = e.clientX - r;
+      const y = e.clientY - r;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    };
+
+    const onOver = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      if (!cursorRef.current) return;
+      if (target && target.closest && target.closest('[data-cursor="project"]')) {
+        isProjectRef.current = true;
+        cursorRef.current.classList.add("cursor--project");
       }
     };
+
+    const onOut = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      if (!cursorRef.current) return;
+      if (target && target.closest && target.closest('[data-cursor="project"]')) {
+        isProjectRef.current = false;
+        cursorRef.current.classList.remove("cursor--project");
+      }
+    };
+
     window.addEventListener("mousemove", moveCursor);
-    return () => window.removeEventListener("mousemove", moveCursor);
+    document.addEventListener("mouseover", onOver);
+    document.addEventListener("mouseout", onOut);
+
+    return () => {
+      window.removeEventListener("mousemove", moveCursor);
+      document.removeEventListener("mouseover", onOver);
+      document.removeEventListener("mouseout", onOut);
+    };
   }, []);
 
   return (
@@ -26,23 +56,52 @@ const CustomCursor = () => {
         pointerEvents: "none",
         zIndex: 99999,
         display: "block",
+        transform: "translate3d(-9999px, -9999px, 0)",
+        transition: "width 0.18s ease, height 0.18s ease, background 0.18s ease, transform 0.04s linear",
       }}
     >
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
+      <div
+        className="cursor-circle"
         style={{
-          fill: "#71717a",
+          width: 24,
+          height: 24,
+          borderRadius: "50%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "transparent",
+          transition: "width 0.18s ease, height 0.18s ease, background 0.18s ease, boxShadow 0.18s ease",
         }}
       >
-        <rect x="0" y="0" width="3" height="15" />
-        <rect x="0" y="0" width="15" height="3" />
-        <rect x="3" y="3" width="3" height="3" />
-        <rect x="6" y="6" width="3" height="3" />
-        <rect x="9" y="9" width="3" height="3" />
-        <rect x="12" y="12" width="3" height="3" />
-      </svg>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          style={{
+            fill: "#222",
+          }}
+        >
+          <rect x="0" y="0" width="3" height="15" />
+          <rect x="0" y="0" width="15" height="3" />
+          <rect x="3" y="3" width="3" height="3" />
+          <rect x="6" y="6" width="3" height="3" />
+          <rect x="9" y="9" width="3" height="3" />
+          <rect x="12" y="12" width="3" height="3" />
+        </svg>
+      </div>
+
+      <style jsx>{`
+        .cursor-wrapper.cursor--project .cursor-circle {
+          width: 128px !important;
+          height: 128px !important;
+          background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(0,0,0,0.12));
+          box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+        }
+        .cursor-wrapper.cursor--project svg {
+          width: 28px !important;
+          height: 28px !important;
+        }
+      `}</style>
     </div>
   );
 };

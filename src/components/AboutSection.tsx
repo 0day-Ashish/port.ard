@@ -92,7 +92,7 @@ const AboutSection = () => {
           </p>
           <h2
             ref={textRef}
-            className="text-[4.5vw] md:text-[2.5vw] leading-[1.15] font-black text-zinc-300"
+            className="text-[4.5vw] md:text-[2.3vw] leading-[1.15] font-black text-zinc-300"
           >
             {text}
           </h2>

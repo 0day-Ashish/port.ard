@@ -20,7 +20,7 @@ const ConnectSection = () => {
     >
       <div className="px-8 md:px-12 pt-8 md:pt-12 max-w-6xl ml-4 md:ml-16 w-full">
         {/* Two columns */}
-        <div className="grid grid-cols-1 md:[grid-template-columns:60%_60%] items-start">
+        <div className="grid grid-cols-1 md:grid-cols-[60%_60%] items-start">
           {/* Left: Connect label + LET'S TALK ABOUT + dropdown */}
           <div className="flex flex-col -mt-6 md:-mt-12">
             <p className="text-zinc-500 uppercase tracking-widest text-sm font-semibold">
@@ -80,11 +80,12 @@ const ConnectSection = () => {
               </div>
               <button
                 type="button"
-                className="shrink-0 flex items-center gap-2 text-zinc-900 font-black uppercase  text-xl md:text-base"
+                style={{ minWidth: 180 }}
+                className="shrink-0 inline-flex items-center gap-3 text-zinc-900 font-black uppercase text-xl md:text-base px-6 py-3 whitespace-nowrap"
                 aria-label="Submit design request"
               >
-                Make design
-                <span aria-hidden>→</span>
+                <span>Make design</span>
+                <span aria-hidden className="text-2xl leading-none">→</span>
               </button>
             </div>
           </div>
