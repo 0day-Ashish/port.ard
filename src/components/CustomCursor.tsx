@@ -7,13 +7,13 @@ const CustomCursor = () => {
   const isProjectRef = useRef(false);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      if (!cursorRef.current) return;
-      const el = cursorRef.current;
-      const r = isProjectRef.current ? 64 : 12; // radius for centering
-      const x = e.clientX - r;
-      const y = e.clientY - r;
-      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    let rafId: number | null = null;
+    let targetX = -9999;
+    let targetY = -9999;
+
+    const onMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
     };
 
     const onOver = (e: Event) => {
@@ -34,12 +34,25 @@ const CustomCursor = () => {
       }
     };
 
-    window.addEventListener("mousemove", moveCursor);
+    const loop = () => {
+      if (!cursorRef.current) return;
+      const el = cursorRef.current;
+      const r = isProjectRef.current ? 64 : 12; // radius for centering
+      const x = targetX - r;
+      const y = targetY - r;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      rafId = requestAnimationFrame(loop);
+    };
+
+    window.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("mouseover", onOver);
     document.addEventListener("mouseout", onOut);
 
+    rafId = requestAnimationFrame(loop);
+
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
+      if (rafId) cancelAnimationFrame(rafId);
+      window.removeEventListener("mousemove", onMove);
       document.removeEventListener("mouseover", onOver);
       document.removeEventListener("mouseout", onOut);
     };
@@ -57,7 +70,6 @@ const CustomCursor = () => {
         zIndex: 99999,
         display: "block",
         transform: "translate3d(-9999px, -9999px, 0)",
-        transition: "width 0.18s ease, height 0.18s ease, background 0.18s ease, transform 0.04s linear",
       }}
     >
       <div
