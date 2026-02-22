@@ -123,7 +123,7 @@ export default function ProjectsSection() {
         </div>
 
         {projects.map((project) => (
-          <div key={project.id} className="project-card relative overflow-hidden" style={{ height: "100vh", background: project.bgColor }}>
+          <div key={project.id} className="project-card relative overflow-hidden h-[60vh] md:h-screen" style={{ background: project.bgColor }}>
             <div className="absolute top-8 left-8 text-white/40 text-sm font-mono">({project.id})</div>
 
             <a href={project.url} className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 z-10" aria-label={`View ${project.name}`} target={project.url && project.url.startsWith("http") ? "_blank" : undefined} rel={project.url && project.url.startsWith("http") ? "noopener noreferrer" : undefined}>
@@ -141,7 +141,7 @@ export default function ProjectsSection() {
             {/* image area */}
             <div className="absolute inset-0">
               <div data-cursor="project" className="absolute inset-0 group">
-                <a href={project.url || '#'} aria-label={`Open ${project.name}`} className="absolute inset-0 z-20" target={project.url && project.url.startsWith("http") ? "_blank" : undefined} rel={project.url && project.url.startsWith("http") ? "noopener noreferrer" : undefined} />
+                <a href={project.url || '#'} aria-label={`Open ${project.name}`} className="absolute inset-0 z-20 block" target={project.url && project.url.startsWith("http") ? "_blank" : undefined} rel={project.url && project.url.startsWith("http") ? "noopener noreferrer" : undefined} />
                 <div className="relative w-full h-full overflow-hidden">
                   {project.id === "01" && (
                     <Image src="/projects/zero-ui2.png" alt="Zero UI screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
