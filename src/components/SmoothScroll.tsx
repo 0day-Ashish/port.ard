@@ -19,6 +19,24 @@ const SmoothScroll = ({ children }: { children: ReactNode }) => {
 
     lenis.on("scroll", ScrollTrigger.update);
 
+    // Intercept anchor clicks with hash and let Lenis perform the smooth scroll
+    const onDocumentClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (!target) return;
+      const anchor = target.closest("a") as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("#")) return;
+      const el = document.querySelector(href);
+      if (!el) return;
+      e.preventDefault();
+      // lenis.scrollTo accepts an element or a number
+      // call scrollTo and let Lenis animate to the element
+      // @ts-ignore - lenis types may vary
+      lenis.scrollTo(el);
+    };
+    document.addEventListener("click", onDocumentClick);
+
     const raf = (time: number) => {
       lenis.raf(time * 1000);
     };
@@ -29,6 +47,7 @@ const SmoothScroll = ({ children }: { children: ReactNode }) => {
 
     return () => {
       lenis.destroy();
+      document.removeEventListener("click", onDocumentClick);
       gsap.ticker.remove(raf);
     };
   }, []);

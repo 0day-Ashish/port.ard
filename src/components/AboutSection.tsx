@@ -79,7 +79,7 @@ const AboutSection = () => {
 
   return (
     // 300vh gives the scroll room for the letter animation
-    <section ref={sectionRef} className="relative w-full bg-white" style={{ height: "300vh" }}>
+    <section id="about" ref={sectionRef} className="relative w-full bg-white" style={{ height: "300vh" }}>
       {/* This container gets pinned by GSAP — sits at bottom-left of viewport */}
       <div
         ref={containerRef}

@@ -80,7 +80,8 @@ const ServicesSection = () => {
         trigger: sectionRef.current,
         start: "top top",
         end: `+=${Math.round(totalScroll)}`,
-        scrub: true,
+        // use a numeric scrub to smooth animation (0.6s ease to target)
+        scrub: 0.6,
         pin: true,
         anticipatePin: 1,
       },
@@ -90,8 +91,9 @@ const ServicesSection = () => {
     // Use a smaller gap between stacked titles for a tighter look.
     tl.to(items, {
       y: (i) => i * (compactHeight + gap),
-      ease: "none",
-      stagger: { each: 0.5, from: "start" },
+      ease: "power3.out",
+      // a slightly larger stagger combined with scrub smoothing makes the motion feel slower and more organic
+      stagger: { each: 0.8, from: "start" },
     });
 
     return () => {

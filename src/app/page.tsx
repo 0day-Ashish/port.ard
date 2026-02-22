@@ -59,6 +59,15 @@ export default function Home() {
   const [startAnimate, setStartAnimate] = useState(false);
   const navItems = ["HOME", "ME", "PORTFOLIO", "SERVICES", "GET IN TOUCH"];
 
+  // map nav labels to section anchors
+  const navMap: Record<string, string> = {
+    HOME: "#home",
+    ME: "#about",
+    PORTFOLIO: "#portfolio",
+    SERVICES: "#services",
+    "GET IN TOUCH": "#get-in-touch",
+  };
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsFadingOut(true);
@@ -112,7 +121,7 @@ export default function Home() {
               {navItems.map((item) => (
                 <a
                   key={item}
-                  href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                  href={navMap[item] ?? `#${item.toLowerCase().replace(/\s+/g, "-")}`}
                   className="text-white text-2xl font-bold transition-opacity hover:opacity-70 text-right uppercase"
                 >
                   <ScrambledText text={item} />

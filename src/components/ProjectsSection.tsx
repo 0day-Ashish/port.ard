@@ -14,23 +14,31 @@ const projects = [
     name: "ZERO UI",
     year: "2026",
     description: "An open-source React component library built for speed and aesthetics.",
-    url: "#",
+    url: "https://zeroui.vercel.app",
     bgColor: "#111111",
   },
   {
     id: "02",
-    name: "PORT.ARD",
+    name: "KRYPTOS",
     year: "2026",
-    description: "A personal portfolio designed and developed from scratch with premium animations.",
+    description: "The only platform you need to decide about a web3 wallet",
     url: "#",
     bgColor: "#1a1a1a",
   },
   {
     id: "03",
-    name: "NEXT PROJECT",
-    year: "2025",
-    description: "Coming soon — something in the works.",
-    url: "#",
+    name: "SIGNIFIYA'26",
+    year: "2026",
+    description: "SOET's most awaited annual techfest",
+    url: "https://signifiya.in",
+    bgColor: "#222222",
+  },
+  {
+    id: "04",
+    name: "AURA",
+    year: "2026",
+    description: "Adamas University's personal student guide rag bot",
+    url: "https://aura-au-bot.vercel.app",
     bgColor: "#222222",
   },
 ];
@@ -38,39 +46,44 @@ const projects = [
 const ProjectsSection = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const rightPanelRef = useRef<HTMLDivElement>(null);
+  const leftPanelRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    if (!sectionRef.current || !rightPanelRef.current) return;
+    if (!sectionRef.current || !rightPanelRef.current || !leftPanelRef.current) return;
 
-    // Slide-up entrance over About section
-    gsap.fromTo(
-      sectionRef.current,
-      { yPercent: 8 },
-      {
-        yPercent: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "top top",
-          scrub: true,
-        },
-      }
-    );
+    const vh = window.innerHeight;
+    const totalHeight = projects.length * vh; // each project occupies 1 viewport height
 
-    // Track active project by right panel scroll position
-    const rightPanel = rightPanelRef.current;
-    const onRightScroll = () => {
-      const scrollTop = rightPanel.scrollTop;
-      const viewportH = rightPanel.clientHeight;
-      const index = Math.round(scrollTop / viewportH);
-      setActiveIndex(Math.min(index, projects.length - 1));
-    };
-    rightPanel.addEventListener("scroll", onRightScroll, { passive: true });
+    // Make the section tall enough to scroll through all project cards
+    sectionRef.current.style.height = `${totalHeight}px`;
+
+    // Make the right panel occupy the full stacked height so page scroll moves the cards
+    rightPanelRef.current.style.position = "absolute";
+    rightPanelRef.current.style.top = "0";
+    rightPanelRef.current.style.right = "0";
+    rightPanelRef.current.style.width = "50%";
+    rightPanelRef.current.style.height = `${totalHeight}px`;
+    rightPanelRef.current.style.overflow = "visible";
+
+    // Pin the left panel for the duration of the projects scroll, then unpin
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: "top top",
+      end: `+=${totalHeight - vh}`,
+      pin: leftPanelRef.current,
+      pinSpacing: false,
+      scrub: true,
+      onUpdate: (self) => {
+        // Update the active index based on page scroll progress
+        const progress = self.progress; // 0..1
+        const idx = Math.round(progress * (projects.length - 1));
+        setActiveIndex(idx);
+      },
+    });
 
     return () => {
-      rightPanel.removeEventListener("scroll", onRightScroll);
+      st.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, []);
@@ -90,6 +103,7 @@ const ProjectsSection = () => {
     >
       {/* ── LEFT PANEL (static) ── */}
       <div
+        ref={leftPanelRef}
         className="hidden md:flex absolute top-0 left-0 flex-col justify-between bg-white h-full"
         style={{ width: "50%", zIndex: 2 }}
       >
@@ -129,12 +143,9 @@ const ProjectsSection = () => {
       */}
       <div
         ref={rightPanelRef}
-        data-lenis-prevent
-        className="absolute top-0 right-0 h-full"
+        className="absolute top-0 right-0"
         style={{
           width: "50%",
-          overflowY: "scroll",
-          scrollSnapType: "y mandatory",
         }}
       >
         {/* Mobile heading */}
@@ -149,11 +160,10 @@ const ProjectsSection = () => {
         {projects.map((project) => (
           <div
             key={project.id}
-            className="project-card relative overflow-hidden flex-shrink-0"
+            className="project-card relative overflow-hidden"
             style={{
               height: "100vh",
               background: project.bgColor,
-              scrollSnapAlign: "start",
             }}
           >
             {/* Number */}
