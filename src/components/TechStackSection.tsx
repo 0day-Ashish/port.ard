@@ -61,23 +61,29 @@ const TechStackSection: React.FC = () => {
         <div className="grid grid-cols-12 gap-6 items-start">
           <div className="col-span-13 md:col-span-4">
             <div ref={headingRef} className="self-start z-10">
-              <h2 className="text-4xl md:text-4xl lg:text-6xl font-black uppercase text-zinc-900">Tech Stack</h2>
-              <p className="mt-6 text-sm mr-20 text-zinc-500">These are the primary tools and technologies I use to build performant, accessible, and delightful web experiences.</p>
+              <h2 className="text-4xl md:text-4xl lg:text-6xl font-black uppercase text-zinc-900 text-left md:text-left">Tech Stack</h2>
+              <p className="mt-6 text-sm text-zinc-500 max-w-md mx-auto md:mx-0">These are the primary tools and technologies I use to build performant, accessible, and delightful web experiences.</p>
             </div>
           </div>
 
-          <div className="col-span-12 md:col-span-8 flex justify-end">
-            <div className="tech-list w-full md:w-3/4 lg:w-2/3 border-t border-b border-zinc-200">
+          <div className="col-span-12 md:col-span-8 flex justify-center md:justify-end">
+            <div className="tech-list w-full md:w-3/4 lg:w-2/3 border-t border-b border-zinc-200 mx-auto md:mx-0">
               {TECHS.map((t, i) => (
                 <div
                   key={t.name + i}
-                  className={`flex items-center justify-between py-6 px-4 ${i < TECHS.length - 1 ? "border-b border-zinc-200" : ""}`}
+                  className={`flex flex-col md:flex-row items-center md:items-center py-6 px-4 ${i < TECHS.length - 1 ? "border-b border-zinc-200" : ""}`}
                 >
-                  <div className="text-sm text-zinc-400 w-12 text-left">{t.left}</div>
-                  <div className="flex-1 text-center">
+                  <div className="hidden md:block text-sm text-zinc-400 w-12 text-left">{t.left}</div>
+                  <div className="flex-1 text-center md:text-left">
                     <div className="text-base md:text-lg font-bold text-zinc-900">{t.name}</div>
                   </div>
-                  <div className="text-sm text-zinc-400 w-36 text-right">{t.right}</div>
+                  <div className="hidden md:block text-sm text-zinc-400 w-36 text-right">{t.right}</div>
+
+                  {/* Mobile: show left/right metadata below the name */}
+                  <div className="md:hidden mt-2 flex justify-between w-full text-sm text-zinc-400 px-2">
+                    <div className="text-left">{t.left}</div>
+                    <div className="text-right">{t.right}</div>
+                  </div>
                 </div>
               ))}
             </div>
