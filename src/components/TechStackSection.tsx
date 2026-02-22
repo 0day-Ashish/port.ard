@@ -13,7 +13,7 @@ const TECHS = [
   { left: "3+", name: "GraphQL", right: "API" },
   { left: "3+", name: "Vercel", right: "Hosting" },
   { left: "2+", name: "GSAP", right: "Animations" },
-  { left: "3+", name: "Framer Motion", right: "Animations" },
+  { left: "3+", name: "Framer", right: "Animations" },
   { left: "2+", name: "Python", right: "Backend" },
   { left: "3+", name: "Render", right: "Hosting" },
   { left: "3+", name: "Railway", right: "Hosting" },
