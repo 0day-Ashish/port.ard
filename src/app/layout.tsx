@@ -11,7 +11,7 @@ const clashGrotesk = localFont({
 
 export const metadata: Metadata = {
   title: "^-^ ard.dev ^-^",
-  description: "designed & developed by ard.dev^-^",
+  description: "designed & developed by ard.dev",
   icons: {
     icon: "/assets/favicon.jpg",
   },
