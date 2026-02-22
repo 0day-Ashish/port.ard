@@ -28,6 +28,11 @@ const TechStackSection: React.FC = () => {
 
   useEffect(() => {
     if (!containerRef.current || !headingRef.current) return;
+    // only enable GSAP pinning on medium+ screens (disable on small/mobile)
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    if (!mq.matches) return;
+
     gsap.registerPlugin(ScrollTrigger);
 
     const container = containerRef.current;

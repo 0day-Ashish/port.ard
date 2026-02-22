@@ -61,7 +61,9 @@ export default function ProjectsSection() {
     rightPanelRef.current.style.position = "absolute";
     rightPanelRef.current.style.top = "0";
     rightPanelRef.current.style.right = "0";
-    rightPanelRef.current.style.width = "50%";
+    const isMobile = window.innerWidth < 768;
+    // on mobile use full width so content doesn't appear clipped to the right half
+    rightPanelRef.current.style.width = isMobile ? "100%" : "50%";
     rightPanelRef.current.style.height = `${totalHeight}px`;
     rightPanelRef.current.style.overflow = "visible";
 
