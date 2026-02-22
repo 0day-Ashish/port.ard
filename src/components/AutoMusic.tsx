@@ -1,13 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { audioManager } from "@/lib/audio";
 
 export default function AutoMusic() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
   const [blocked, setBlocked] = useState(false);
+  const pathname = usePathname();
+  const disabledOnThisPage = pathname && pathname.startsWith("/portfolio");
 
+  // Initialize audio and control autoplay based on current pathname
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -15,10 +19,19 @@ export default function AutoMusic() {
     audioRef.current = audio;
 
     const tryPlay = async () => {
+      // if we're on the portfolio page, don't autoplay
+      if (pathname && pathname.startsWith("/portfolio")) {
+        // ensure audio is paused
+        audioManager.pause();
+        setPlaying(false);
+        setBlocked(false);
+        return;
+      }
+
       try {
-          await audioManager.play();
-          const isPlayingNow = !!(audio && !audio.paused && !audio.ended);
-          setPlaying(isPlayingNow);
+        await audioManager.play();
+        const isPlayingNow = !!(audio && !audio.paused && !audio.ended);
+        setPlaying(isPlayingNow);
         setBlocked(false);
       } catch (err) {
         setPlaying(false);
@@ -31,6 +44,8 @@ export default function AutoMusic() {
     const unlock = async () => {
       if (!audio) return;
       try {
+        // don't unlock (start) audio if on portfolio page
+        if (pathname && pathname.startsWith("/portfolio")) return;
         await audio.play();
         const isPlayingNow = !!(audio && !audio.paused && !audio.ended);
         setPlaying(isPlayingNow);
@@ -48,12 +63,9 @@ export default function AutoMusic() {
     return () => {
       window.removeEventListener("click", unlock);
       window.removeEventListener("touchstart", unlock);
-      if (audio) {
-        audio.pause();
-        // don't clear src to allow reuse across route changes
-      }
+      // do not pause here — pause is controlled by pathname above
     };
-  }, []);
+  }, [pathname]);
 
   const toggle = async () => {
     const audio = audioRef.current;
@@ -63,6 +75,8 @@ export default function AutoMusic() {
     const isPlayingNow = !!(audio && !audio.paused && !audio.ended);
     setPlaying(isPlayingNow);
   };
+
+  if (disabledOnThisPage) return null;
 
   return (
     <div>
