@@ -3,15 +3,17 @@
 import { useState } from "react";
 
 const topics = [
-  "New project",
+  "Web Development",
   "Collaboration",
-  "General inquiry",
+  "App Development",
   "Other",
 ];
 
 const ConnectSection = () => {
   const [topic, setTopic] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
 
   return (
     <section
@@ -80,13 +82,40 @@ const ConnectSection = () => {
               </div>
               <button
                 type="button"
+                onClick={async () => {
+                  setStatus(null);
+                  if (!topic) return setStatus("Please select a topic");
+                  if (!email) return setStatus("Please enter your email");
+                  setLoading(true);
+                  try {
+                    const res = await fetch("/api/contact", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ topic, email }),
+                    });
+                    const data = await res.json();
+                    if (data.ok) {
+                      setStatus("Sent — thanks!");
+                      setTopic("");
+                      setEmail("");
+                    } else {
+                      setStatus(data.error || "Failed to send");
+                    }
+                  } catch (err) {
+                    setStatus("Network error");
+                  } finally {
+                    setLoading(false);
+                  }
+                }}
                 style={{ minWidth: 180 }}
                 className="shrink-0 inline-flex items-center gap-3 text-zinc-900 font-black uppercase text-xl md:text-base px-6 py-3 whitespace-nowrap"
                 aria-label="Submit design request"
+                disabled={loading}
               >
-                <span>Make design</span>
+                <span>{loading ? "Sending…" : "Make design"}</span>
                 <span aria-hidden className="text-2xl leading-none">→</span>
               </button>
+              {status && <div className="text-sm text-zinc-500 ml-4">{status}</div>}
             </div>
           </div>
         </div>

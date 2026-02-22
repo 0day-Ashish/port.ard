@@ -16,7 +16,7 @@ const services = [
     title: "UX/UI DESIGN",
   },
   {
-    title: "BACKEND DEVELOPMENT",
+    title: "APP DEVELOPMENT",
   },
   {
     title: "BRAND DESIGN",

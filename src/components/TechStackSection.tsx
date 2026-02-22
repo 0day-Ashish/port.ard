@@ -51,7 +51,7 @@ const TechStackSection: React.FC = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="w-full bg-white py-8 md:py-12 mb-50">
+    <section ref={containerRef} className="w-full bg-white py-8 md:py-12 mb-70">
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-12 gap-6 items-start">
           <div className="col-span-13 md:col-span-4">
