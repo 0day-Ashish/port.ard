@@ -10,44 +10,16 @@ if (typeof window !== "undefined") {
 
 const services = [
   {
-    title: "WEB DESIGN",
-    items: [
-      "Web or mobile wireframes",
-      "Interactive prototypes",
-      "Full UI design in Figma",
-      "Design system (typography, colors, components)",
-      "Developer-ready handoff files",
-    ],
+    title: "WEB DEVELOPMENT",
   },
   {
     title: "UX/UI DESIGN",
-    items: [
-      "Competitive & market research",
-      "User flows and product logic definition",
-      "UX architecture for mobile and desktop apps",
-      "Research-driven prototyping",
-      "UX testing & scalable UI design for long-term growth",
-    ],
   },
   {
-    title: "DEVELOPMENT",
-    items: [
-      "Full-cycle website development (React, Next.js)",
-      "Smooth animations & refined micro-interactions",
-      "High performance and SEO-friendly foundations",
-      "CMS setup + optional ongoing support",
-      "End-to-end guidance from start to launch",
-    ],
+    title: "BACKEND DEVELOPMENT",
   },
   {
-    title: "CLIENT ZEN MODE",
-    items: [
-      "Clean structure and maintainable code",
-      "Easy-to-manage backend and content",
-      "Product confidence with on-time delivery",
-      "Clear communication and iterative feedback",
-      "Launch support and handoff documentation",
-    ],
+    title: "BRAND DESIGN",
   },
 ];
 
