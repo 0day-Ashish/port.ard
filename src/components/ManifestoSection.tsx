@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const WORDS = ["AWARDS", "ARE", "OPTIONAL.", "classy", "ISN'T."];
+const WORDS = ["JACK", "OF", "ALL.", "TRADES", "MASTER", "OF", "NONE"];
 
 const ManifestoSection = () => {
   const sectionRef = useRef<HTMLDivElement | null>(null);
