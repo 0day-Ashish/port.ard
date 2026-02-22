@@ -54,6 +54,7 @@ export default function ProjectsSection() {
 
     const vh = window.innerHeight;
     const totalHeight = projects.length * vh;
+    const headerHeight = 80; // offset so pinned left panel sits below fixed header
 
     // set section and right panel sizes
     sectionRef.current.style.height = `${totalHeight}px`;
@@ -64,6 +65,10 @@ export default function ProjectsSection() {
     rightPanelRef.current.style.height = `${totalHeight}px`;
     rightPanelRef.current.style.overflow = "visible";
 
+    // ensure left panel is offset below the fixed header to avoid being covered
+    leftPanelRef.current.style.top = `${headerHeight}px`;
+    leftPanelRef.current.style.zIndex = "10";
+
     // entrance for left heading
     if (leftHeadingRef.current) {
       gsap.fromTo(leftHeadingRef.current, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", delay: 0.15 });
@@ -71,7 +76,7 @@ export default function ProjectsSection() {
 
     const st = ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: "top top",
+      start: `top top+=${headerHeight}`,
       end: `+=${totalHeight - vh}`,
       pin: leftPanelRef.current,
       pinSpacing: false,

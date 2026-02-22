@@ -38,6 +38,7 @@ export default function PortfolioPage() {
 
       <div className="pt-20">
         <ProjectsSection />
+        <div className="h-12 md:h-28" />
         <ConnectSection />
         <section className="relative z-10 w-full bg-white py-4 md:py-6 flex items-center justify-center mb-50 -mt-50">
           <TextType
