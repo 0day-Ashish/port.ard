@@ -32,7 +32,7 @@ const Footer = () => {
         {time && <span>{time}</span>}
       </div>
 
-      {/* Middle: contact links — Telegram left, Email center, LinkedIn right */}
+      {/* Middle: contact links — Instagram left, Email center with GitHub below, LinkedIn right */}
       <div className="flex flex-1 items-center justify-between px-8 md:px-16 py-4 md:py-6 w-full">
         <a
           href="https://instagram.com/ashishh_rd_"
@@ -42,12 +42,24 @@ const Footer = () => {
         >
           Instagram
         </a>
-        <a
-          href="mailto:0day.ashish@gmail.com"
-          className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
-        >
-          Email
-        </a>
+
+        <div className="flex flex-col items-center gap-2">
+          <a
+            href="mailto:0day.ashish@gmail.com"
+            className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"
+          >
+            Email
+          </a>
+          <a
+            href="https://github.com/0day-Ashish"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="uppercase text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl font-black"
+          >
+            GitHub
+          </a>
+        </div>
+
         <a
           href="https://linkedin.com/in/arddev/"
           target="_blank"
