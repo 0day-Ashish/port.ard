@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { audioManager } from "@/lib/audio";
 import gsap from "gsap";
 import ScrambledText from "@/components/ScrambledText";
 import AboutSection from "@/components/AboutSection";
@@ -58,6 +59,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [startAnimate, setStartAnimate] = useState(false);
+  const [volume, setVolume] = useState<number>(0.15);
   const navItems = ["HOME", "ME", "PORTFOLIO", "SERVICES", "GET IN TOUCH"];
 
   // map nav labels to section anchors
@@ -78,6 +80,16 @@ export default function Home() {
       }, 800);
     }, 2000);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // initialize slider from audio manager (if audio already initialized)
+    try {
+      const v = audioManager.getVolume();
+      setVolume(v || 0.15);
+    } catch (e) {
+      setVolume(0.15);
+    }
   }, []);
 
   return (
@@ -132,9 +144,9 @@ export default function Home() {
           </div>
 
           {/* Right Side: Bio content */}
-          <div className="relative h-[40vh] md:h-screen md:w-1/2 flex flex-col justify-start pt-[25vh] md:pt-[35vh] items-end pr-2 md:pr-4 z-20">
-            <div className="max-w-md flex items-start gap-4">
-              <div className="mt-[3em]">
+          <div className="relative h-[40vh] md:h-screen md:w-1/2 flex flex-col justify-start pt-[25vh] md:pt-[35vh] items-end pr-2 md:pr-4 pl-4 md:pl-0 z-20">
+            <div className="max-w-md flex flex-col items-start gap-4">
+                <div className="mt-3 md:mt-[3em]">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] block animate-pulse-glow"></span>
               </div>
               <p className="text-zinc-500 text-lg leading-relaxed font-medium text-left">
@@ -142,6 +154,30 @@ export default function Home() {
                 I build high-performing websites for people<br />
                 that launch fast, look premium, and convert with impact.
               </p>
+                <div className="mt-2 md:mt-4 flex items-center gap-3">
+                <span className="text-sm text-zinc-400">Volume</span>
+                <input
+                  type="range"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  value={volume}
+                  onPointerDown={(e) => {
+                    e.stopPropagation();
+                  }}
+                  onPointerUp={(e) => {
+                    e.stopPropagation();
+                  }}
+                  onChange={(e) => {
+                    const v = Number((e.target as HTMLInputElement).value);
+                    console.debug("volume slider change ->", v);
+                    setVolume(v);
+                    audioManager.setVolume(v);
+                  }}
+                  className="volume-slider w-48 md:w-64 accent-red-600"
+                  aria-label="Volume"
+                />
+              </div>
             </div>
           </div>
         </div>

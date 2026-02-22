@@ -277,3 +277,49 @@ body ::-moz-selection,
   background: #000000 !important;
   color: #ffffff !important;
 }
+
+/* Volume slider: ensure consistent red thumb/track and keep color on hover */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  display: block;
+  height: 18px; /* make the control tall enough for consistent hit area */
+  pointer-events: auto; /* ensure it's interactive even if ancestors modify pointer-events */
+}
+.volume-slider:focus {
+  outline: none;
+}
+.volume-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  background: rgba(220, 38, 38, 0.18);
+  border-radius: 999px;
+  margin-top: -5px;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #dc2626; /* red */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+  /* center the thumb on the 8px track: (trackHeight - thumbHeight)/2 = -5px */
+  margin-top: -5px;
+}
+.volume-slider:hover::-webkit-slider-thumb,
+.volume-slider:active::-webkit-slider-thumb {
+  background: #dc2626;
+}
+.volume-slider::-moz-range-track {
+  height: 8px;
+  background: rgba(220, 38, 38, 0.18);
+  border-radius: 999px;
+}
+.volume-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #dc2626;
+  border: none;
+}
