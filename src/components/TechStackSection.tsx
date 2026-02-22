@@ -61,7 +61,7 @@ const TechStackSection: React.FC = () => {
         <div className="grid grid-cols-12 gap-6 items-start">
           <div className="col-span-13 md:col-span-4">
             <div ref={headingRef} className="self-start z-10">
-              <h2 className="text-xl md:text-4xl lg:text-6xl font-black uppercase text-zinc-900">Tech Stack</h2>
+              <h2 className="text-4xl md:text-4xl lg:text-6xl font-black uppercase text-zinc-900">Tech Stack</h2>
               <p className="mt-6 text-sm mr-20 text-zinc-500">These are the primary tools and technologies I use to build performant, accessible, and delightful web experiences.</p>
             </div>
           </div>
