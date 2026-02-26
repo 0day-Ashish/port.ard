@@ -5,21 +5,22 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const TECHS = [
-  { left: "6+", name: "React", right: "Frontend" },
-  { left: "6+", name: "Next.js", right: "Framework" },
-  { left: "5+", name: "TypeScript", right: "Language" },
-  { left: "6+", name: "Tailwind CSS", right: "Styling" },
-  { left: "4+", name: "Node.js", right: "Backend" },
-  { left: "3+", name: "GraphQL", right: "API" },
-  { left: "3+", name: "Vercel", right: "Hosting" },
+  { left: "2+", name: "React", right: "Frontend" },
+  { left: "2+", name: "Next.js", right: "Framework" },
+  { left: "1+", name: "Angular Js", right: "Framework" },
+  { left: "2+", name: "TypeScript", right: "Language" },
+  { left: "2+", name: "Tailwind CSS", right: "Styling" },
+  { left: "2+", name: "Node.js", right: "Backend" },
+  { left: "1+", name: "GraphQL", right: "API" },
+  { left: "2+", name: "Vercel", right: "Hosting" },
   { left: "2+", name: "GSAP", right: "Animations" },
   { left: "3+", name: "Framer", right: "Animations" },
-  { left: "2+", name: "Python", right: "Backend" },
+  { left: "3+", name: "Python", right: "Backend" },
   { left: "3+", name: "Render", right: "Hosting" },
   { left: "3+", name: "Railway", right: "Hosting" },
   { left: "2+", name: "Three.js", right: "Animations" },
-  { left: "3+", name: "PostgreSQL", right: "Database" },
-  { left: "3+", name: "MongoDB", right: "Database" },
+  { left: "2+", name: "PostgreSQL", right: "Database" },
+  { left: "2+", name: "MongoDB", right: "Database" },
 ];
 
 const TechStackSection: React.FC = () => {

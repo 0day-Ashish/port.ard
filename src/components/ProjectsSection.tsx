@@ -54,7 +54,7 @@ export default function ProjectsSection() {
 
     const vh = window.innerHeight;
     const totalHeight = projects.length * vh;
-    const headerHeight = 80; // offset so pinned left panel sits below fixed header
+    const headerHeight = 40; // offset so pinned left panel sits below fixed header (reduced further to shift heading up)
 
     // set section and right panel sizes
     sectionRef.current.style.height = `${totalHeight}px`;
@@ -98,7 +98,7 @@ export default function ProjectsSection() {
   return (
     <section ref={sectionRef} id="portfolio" className="relative w-full bg-white" style={{ height: "100vh", zIndex: 10, overflow: "hidden", scrollMarginTop: "80px" }}>
       <div ref={leftPanelRef} className="hidden md:flex absolute top-0 left-0 flex-col justify-between bg-white h-full" style={{ width: "50%", zIndex: 2 }}>
-        <div className="px-8 md:px-6 pt-6 pb-12">
+        <div className="px-8 md:px-6 lg:-pt-56  pb-12">
           <h2 ref={leftHeadingRef} className="text-[10vw] md:text-[7vw] leading-[0.9] font-black uppercase tracking-tighter text-black opacity-0">
             SELECTED<br />WORKS
           </h2>
@@ -117,7 +117,7 @@ export default function ProjectsSection() {
 
       <div ref={rightPanelRef} className="absolute top-0 right-0" style={{ width: "50%" }}>
         <div className="md:hidden">
-          <div className="px-8 pb-6 bg-white">
+          <div className=" pb-6 bg-white">
             <h2 className="text-[14vw] leading-[0.9] font-black uppercase tracking-tighter text-black">SELECTED<br />WORKS</h2>
           </div>
         </div>

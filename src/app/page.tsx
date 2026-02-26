@@ -178,6 +178,18 @@ export default function Home() {
                   aria-label="Volume"
                 />
               </div>
+              {/* Pacman contribution graph - visible on all sizes below the slider */}
+              <div className="mt-4 rounded-2xl overflow-hidden shadow-lg bg-white p-1">
+                <picture>
+                  <source media="(prefers-color-scheme: dark)" srcSet="https://raw.githubusercontent.com/0day-Ashish/0day-Ashish/output/pacman-contribution-graph-dark.svg" />
+                  <source media="(prefers-color-scheme: light)" srcSet="https://raw.githubusercontent.com/0day-Ashish/0day-Ashish/output/pacman-contribution-graph.svg" />
+                  <img
+                    alt="pacman contribution graph"
+                    src="https://raw.githubusercontent.com/0day-Ashish/0day-Ashish/output/pacman-contribution-graph.svg"
+                    className="w-78 sm:w-64 md:w-72 lg:w-96 h-auto block rounded-xl"
+                  />
+                </picture>
+              </div>
             </div>
           </div>
         </div>
