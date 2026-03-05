@@ -54,6 +54,15 @@
   z-index: 99999;
 }
 
+/* Ensure BMC widget floats above everything and is clickable */
+#bmc-wbtn,
+.bmc-btn-container,
+[id^="bmc-wbtn"] {
+  z-index: 100000 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+}
+
 /* Force the font on everything for absolute certainty */
 html,
 body,

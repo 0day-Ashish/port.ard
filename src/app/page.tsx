@@ -146,7 +146,7 @@ export default function Home() {
           {/* Right Side: Bio content */}
           <div className="relative h-[40vh] md:h-screen md:w-1/2 flex flex-col justify-start pt-[25vh] md:pt-[35vh] items-end pr-2 md:pr-4 pl-4 md:pl-0 z-20">
             <div className="max-w-md flex flex-col items-start gap-4">
-                <div className="mt-3 md:mt-[3em]">
+              <div className="mt-3 md:mt-[3em]">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-600 shadow-[0_0_12px_rgba(220,38,38,0.8)] block animate-pulse-glow"></span>
               </div>
               <p className="text-zinc-500 text-lg leading-relaxed font-medium text-left">
@@ -154,7 +154,7 @@ export default function Home() {
                 I build high-performing websites for people<br />
                 that launch fast, look premium, and convert with impact.
               </p>
-                <div className="mt-2 md:mt-4 flex items-center gap-3">
+              <div className="mt-2 md:mt-4 flex items-center gap-3">
                 <span className="text-sm text-zinc-400">Volume</span>
                 <input
                   type="range"
@@ -200,7 +200,7 @@ export default function Home() {
         <ManifestoSection />
         <TechStackSection />
         <ConnectSection />
-          <section className="relative z-10 w-full bg-white py-4 md:py-6 flex items-center justify-center mb-50 -mt-50">
+        <section className="relative z-10 w-full bg-white py-4 md:py-6 flex items-center justify-center mb-50 -mt-50">
           <TextType
             text={["LET'S MAKE DESIGN", "YOU WANT TO CLICK"]}
             typingSpeed={75}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-const MARQUEE_TEXT = "© ard.dev,  2025–2026 ";
+const MARQUEE_TEXT = "© ard.dev | 2025 ";
 
 const Footer = () => {
   const [time, setTime] = useState("");

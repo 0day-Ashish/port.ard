@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/next"
+import Script from "next/script";
 
 const clashGrotesk = localFont({
   src: "../../public/fonts/ClashGrotesk-Variable.ttf",
@@ -31,11 +32,16 @@ export default function RootLayout({
       <body
         className={`${clashGrotesk.variable} antialiased`}
       >
+        <Script
+          src="https://louisabraham.github.io/nekojs/neko.js"
+          data-autostart
+          strategy="afterInteractive"
+        />
         <SmoothScroll>
           <CustomCursor />
           <AutoMusic />
-          <SpeedInsights/>
-          <Analytics/>
+          <SpeedInsights />
+          <Analytics />
           {children}
         </SmoothScroll>
       </body>
