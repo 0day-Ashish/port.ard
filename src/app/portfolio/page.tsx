@@ -47,7 +47,7 @@ export default function PortfolioPage() {
       url: "https://zeroui.vercel.app",
     },
     {
-      file: "kryptos.png",
+      file: "kryptos-v1.png",
       title: "KRYPTOS",
       desc: "The only platform you need to decide about a web3 wallet",
       features: ["Secure key management", "Multi-chain support", "Simple UX"],

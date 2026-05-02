@@ -37,7 +37,7 @@ const projects = [
     name: "KRYPTOS",
     year: "2026",
     description: "The only platform you need to decide about a web3 wallet",
-    url: "#",
+    url: "https://kryptos-v1.vercel.app/",
     bgColor: "#1a1a1a",
   },
   {
@@ -169,7 +169,7 @@ export default function ProjectsSection() {
                     <Image src="/projects/zero-ui2.png" alt="Zero UI screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
                   )}
                   {project.id === "04" && (
-                    <Image src="/projects/kryptos.png" alt="Kryptos screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
+                    <Image src="/projects/kryptos-v1.png" alt="Kryptos screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
                   )}
                   {project.id === "05" && (
                     <Image src="/projects/signifiya.png" alt="Signifiya screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
