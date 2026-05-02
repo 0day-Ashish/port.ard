@@ -10,6 +10,22 @@ if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 const projects = [
   {
     id: "01",
+    name: "BROSKIE.AI",
+    year: "2026",
+    description: "A full-stack AI-powered job application platform for autonomous recruitment.",
+    url: "https://broskie-ai-gtic.vercel.app/",
+    bgColor: "#0f172a",
+  },
+  {
+    id: "02",
+    name: "RATNADIPA",
+    year: "2026",
+    description: "A premium, high-impact portfolio for content creator Ratnadipa.",
+    url: "https://ratnadipa-portfolio-m9l9.vercel.app/",
+    bgColor: "#1c1917",
+  },
+  {
+    id: "03",
     name: "ZERO UI",
     year: "2026",
     description: "An open-source React component library built for speed and aesthetics.",
@@ -17,7 +33,7 @@ const projects = [
     bgColor: "#111111",
   },
   {
-    id: "02",
+    id: "04",
     name: "KRYPTOS",
     year: "2026",
     description: "The only platform you need to decide about a web3 wallet",
@@ -25,7 +41,7 @@ const projects = [
     bgColor: "#1a1a1a",
   },
   {
-    id: "03",
+    id: "05",
     name: "SIGNIFIYA'26",
     year: "2026",
     description: "SOET's most awaited annual techfest",
@@ -33,7 +49,7 @@ const projects = [
     bgColor: "#222222",
   },
   {
-    id: "04",
+    id: "06",
     name: "AURA",
     year: "2026",
     description: "Adamas University's personal student guide rag bot",
@@ -144,15 +160,21 @@ export default function ProjectsSection() {
                 <a href={project.url || '#'} aria-label={`Open ${project.name}`} className="absolute inset-0 z-20 block" target={project.url && project.url.startsWith("http") ? "_blank" : undefined} rel={project.url && project.url.startsWith("http") ? "noopener noreferrer" : undefined} />
                 <div className="relative w-full h-full overflow-hidden">
                   {project.id === "01" && (
-                    <Image src="/projects/zero-ui2.png" alt="Zero UI screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
+                    <Image src="/projects/broskie.png" alt="Broskie.ai screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
                   )}
                   {project.id === "02" && (
-                    <Image src="/projects/kryptos.png" alt="Kryptos screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
+                    <Image src="/projects/ratnadipa-port.png" alt="Ratnadipa screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
                   )}
                   {project.id === "03" && (
-                    <Image src="/projects/signifiya.png" alt="Signifiya screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
+                    <Image src="/projects/zero-ui2.png" alt="Zero UI screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
                   )}
                   {project.id === "04" && (
+                    <Image src="/projects/kryptos.png" alt="Kryptos screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
+                  )}
+                  {project.id === "05" && (
+                    <Image src="/projects/signifiya.png" alt="Signifiya screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
+                  )}
+                  {project.id === "06" && (
                     <Image src="/projects/aura.png" alt="Aura screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
                   )}
                 </div>

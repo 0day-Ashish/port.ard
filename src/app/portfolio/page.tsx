@@ -26,28 +26,46 @@ export default function PortfolioPage() {
   const [menuOpen, setMenuOpen] = useState(false);
   const projectImages = [
     {
+      file: "broskie.png",
+      title: "BROSKIE.AI",
+      desc: "A full-stack job application platform that combines high-fidelity AI agents with a robust recruitment portal to help users land their dream roles with zero manual effort.",
+      features: ["Autonomous Job Agents", "Dynamic Resume Tailoring", "HR Control Center", "Intelligent Matching"],
+      url: "https://broskie-ai-gtic.vercel.app/",
+    },
+    {
+      file: "ratnadipa-port.png",
+      title: "RATNADIPA",
+      desc: "A premium portfolio built for content creator Ratnadipa, focusing on high-impact visual storytelling and personal branding.",
+      features: ["Visual Storytelling", "High-Impact Design", "Personal Branding", "Content Focused"],
+      url: "https://ratnadipa-portfolio-m9l9.vercel.app/",
+    },
+    {
       file: "zero-ui2.png",
       title: "ZERO UI",
       desc: "An open-source React component library built for speed and aesthetics.",
       features: ["Lightweight", "Accessible components", "Theming & tokens"],
+      url: "https://zeroui.vercel.app",
     },
     {
       file: "kryptos.png",
       title: "KRYPTOS",
       desc: "The only platform you need to decide about a web3 wallet",
       features: ["Secure key management", "Multi-chain support", "Simple UX"],
+      url: "#",
     },
     {
       file: "signifiya.png",
       title: "SIGNIFIYA'26",
       desc: "SOET's most awaited annual techfest",
       features: ["Event schedules", "Speaker profiles", "Live updates"],
+      url: "https://signifiya.in",
     },
     {
       file: "aura.png",
       title: "AURA",
       desc: "Adamas University's personal student guide rag bot",
       features: ["Campus maps", "Personalized tips", "Offline support"],
+      url: "https://aura-au-bot.vercel.app",
     },
   ];
   const [activeIndex, setActiveIndex] = useState(0);
@@ -185,6 +203,19 @@ export default function PortfolioPage() {
                       <span className="text-sm text-zinc-500">{`${i + 1}/${projectImages.length}`}</span>
                     </div>
                     <p className="text-sm text-zinc-700 mt-2">{p.desc}</p>
+                    {p.url && p.url !== "#" && (
+                      <a
+                        href={p.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mt-3 text-sm font-bold text-black border-b-2 border-black pb-0.5 hover:opacity-70 transition-opacity"
+                      >
+                        Visit Project
+                        <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    )}
                     {p.features && (
                       <ul className="mt-2 flex flex-wrap gap-2">
                         {p.features.map((f, idx) => (
@@ -210,7 +241,21 @@ export default function PortfolioPage() {
                     <h2 className="text-4xl font-black uppercase m-0">{projectImages[activeIndex].title}</h2>
                     <span className="text-sm md:text-base text-zinc-500 font-medium">{`${activeIndex + 1}/${projectImages.length}`}</span>
                   </div>
-                  <p className="text-base text-zinc-700 mb-4">{projectImages[activeIndex].desc}</p>
+                  <p className="text-base text-zinc-700 mb-6">{projectImages[activeIndex].desc}</p>
+
+                  {projectImages[activeIndex].url && projectImages[activeIndex].url !== "#" && (
+                    <a
+                      href={projectImages[activeIndex].url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-3 mb-8 text-lg font-black text-black border-b-4 border-black pb-1 hover:opacity-70 transition-opacity"
+                    >
+                      VISIT PROJECT
+                      <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                        <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  )}
 
                   {/* Project features list */}
                   {projectImages[activeIndex].features && (
