@@ -112,7 +112,7 @@ export default function Home() {
                 src="/assets/me.JPG"
                 alt="Hero Portrait"
                 fill
-                className="object-cover"
+                className="object-cover grayscale"
                 priority
               />
             </div>
