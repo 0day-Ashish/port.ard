@@ -67,7 +67,7 @@ export default function Home() {
   const navMap: Record<string, string> = {
     HOME: "#home",
     ME: "#about",
-    RESUME: "/assets/resume.pdf",
+    RESUME: "/assets/resume1.pdf",
     SERVICES: "#services",
     "GET IN TOUCH": "#get-in-touch",
   };
@@ -128,7 +128,6 @@ export default function Home() {
                 <a
                   key={item}
                   href={navMap[item] ?? `#${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  download={item === "RESUME" ? "Ashish_Resume.pdf" : undefined}
                   target={item === "RESUME" ? "_blank" : undefined}
                   rel={item === "RESUME" ? "noopener noreferrer" : undefined}
                   className="text-white text-2xl font-bold transition-opacity hover:opacity-70 text-right uppercase"
