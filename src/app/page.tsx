@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { audioManager } from "@/lib/audio";
+
 import gsap from "gsap";
 import ScrambledText from "@/components/ScrambledText";
 import AboutSection from "@/components/AboutSection";
@@ -59,14 +59,14 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [startAnimate, setStartAnimate] = useState(false);
-  const [volume, setVolume] = useState<number>(0.15);
-  const navItems = ["HOME", "ME", "PORTFOLIO", "SERVICES", "GET IN TOUCH"];
+
+  const navItems = ["HOME", "ME", "RESUME", "SERVICES", "GET IN TOUCH"];
 
   // map nav labels to section anchors
   const navMap: Record<string, string> = {
     HOME: "#home",
     ME: "#about",
-    PORTFOLIO: "/portfolio",
+    RESUME: "/assets/resume.pdf",
     SERVICES: "#services",
     "GET IN TOUCH": "#get-in-touch",
   };
@@ -82,15 +82,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(() => {
-    // initialize slider from audio manager (if audio already initialized)
-    try {
-      const v = audioManager.getVolume();
-      setVolume(v || 0.15);
-    } catch (e) {
-      setVolume(0.15);
-    }
-  }, []);
+
 
   return (
     <>
@@ -100,7 +92,7 @@ export default function Home() {
           className={`fixed inset-0 z-100 flex flex-col items-center justify-center bg-[#111] text-white transition-opacity duration-800 ${isFadingOut ? "opacity-0" : "opacity-100"}`}
         >
           <div className="text-sm tracking-[0.3em] opacity-80 uppercase animate-fade-up">
-            ard.dev © est. 2026
+            ard.dev © est. 2025
           </div>
         </div>
       )}
@@ -120,7 +112,7 @@ export default function Home() {
                 src="/assets/me.JPG"
                 alt="Hero Portrait"
                 fill
-                className="object-cover grayscale"
+                className="object-cover"
                 priority
               />
             </div>
@@ -135,6 +127,9 @@ export default function Home() {
                 <a
                   key={item}
                   href={navMap[item] ?? `#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                  download={item === "RESUME" ? "Ashish_Resume.pdf" : undefined}
+                  target={item === "RESUME" ? "_blank" : undefined}
+                  rel={item === "RESUME" ? "noopener noreferrer" : undefined}
                   className="text-white text-2xl font-bold transition-opacity hover:opacity-70 text-right uppercase"
                 >
                   <ScrambledText text={item} />
@@ -154,30 +149,7 @@ export default function Home() {
                 I build high-performing websites for people<br />
                 that launch fast, look premium, and convert with impact.
               </p>
-              <div className="mt-2 md:mt-4 flex items-center gap-3">
-                <span className="text-sm text-zinc-400">Volume</span>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.01"
-                  value={volume}
-                  onPointerDown={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onPointerUp={(e) => {
-                    e.stopPropagation();
-                  }}
-                  onChange={(e) => {
-                    const v = Number((e.target as HTMLInputElement).value);
-                    console.debug("volume slider change ->", v);
-                    setVolume(v);
-                    audioManager.setVolume(v);
-                  }}
-                  className="volume-slider w-48 md:w-64 accent-red-600"
-                  aria-label="Volume"
-                />
-              </div>
+
               {/* Pacman contribution graph - visible on all sizes below the slider */}
               <div className="mt-4 rounded-2xl overflow-hidden shadow-lg bg-white p-1">
                 <picture>
@@ -202,7 +174,7 @@ export default function Home() {
         <ConnectSection />
         <section className="relative z-10 w-full bg-white py-4 md:py-6 flex items-center justify-center mb-50 -mt-50">
           <TextType
-            text={["LET'S MAKE DESIGN", "YOU WANT TO CLICK"]}
+            text={["LET'S CODE DESIGN", "YOU WANT TO CLICK"]}
             typingSpeed={75}
             pauseDuration={1500}
             showCursor

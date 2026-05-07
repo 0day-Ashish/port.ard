@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 import CustomCursor from "@/components/CustomCursor";
 import SmoothScroll from "@/components/SmoothScroll";
-import AutoMusic from "@/components/AutoMusic";
+
 
 export default function RootLayout({
   children,
@@ -39,7 +39,7 @@ export default function RootLayout({
         />
         <SmoothScroll>
           <CustomCursor />
-          <AutoMusic />
+
           <SpeedInsights />
           <Analytics />
           {children}

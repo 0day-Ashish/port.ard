@@ -83,8 +83,8 @@ const ServicesSection = () => {
           <div className="w-full px-6 md:px-12">
             <div className="max-w-6xl mx-auto">
               {/* Heading moved inside the pinned area so it remains visible while items stack */}
-              <div className="pb-6 border-b border-black mb-6">
-                <h2 className="text-3xl md:text-4xl font-black uppercase tracking-tighter text-black">
+              <div className="pb-10 border-b border-black mb-12">
+                <h2 className="text-[12vw] md:text-[8vw] font-black uppercase tracking-tighter text-black leading-[0.8]">
                   Services
                 </h2>
               </div>
@@ -102,7 +102,7 @@ const ServicesSection = () => {
                     style={{ willChange: "transform, opacity", zIndex: services.length - i }}
                   >
                     <div className="py-8 md:py-10 px-0 md:px-0">
-                      <h3 className="text-4xl md:text-5xl lg:text-6xl font-black uppercase tracking-tighter text-black">
+                      <h3 className="text-5xl md:text-7xl lg:text-6xl font-black uppercase tracking-tighter text-black">
                         {service.title}
                       </h3>
                     </div>

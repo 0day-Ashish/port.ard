@@ -1,187 +1,150 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Github, Globe, ArrowUpRight } from "lucide-react";
+import { projects } from "@/data/projects";
 
 if (typeof window !== "undefined") gsap.registerPlugin(ScrollTrigger);
 
-const projects = [
-  {
-    id: "01",
-    name: "BROSKIE.AI",
-    year: "2026",
-    description: "A full-stack AI-powered job application platform for autonomous recruitment.",
-    url: "https://broskie-ai-gtic.vercel.app/",
-    bgColor: "#0f172a",
-  },
-  {
-    id: "02",
-    name: "RATNADIPA",
-    year: "2026",
-    description: "A premium, high-impact portfolio for content creator Ratnadipa.",
-    url: "https://ratnadipa-portfolio-m9l9.vercel.app/",
-    bgColor: "#1c1917",
-  },
-  {
-    id: "03",
-    name: "ZERO UI",
-    year: "2026",
-    description: "An open-source React component library built for speed and aesthetics.",
-    url: "https://zeroui.vercel.app",
-    bgColor: "#111111",
-  },
-  {
-    id: "04",
-    name: "KRYPTOS",
-    year: "2026",
-    description: "The only platform you need to decide about a web3 wallet",
-    url: "https://kryptos-v1.vercel.app/",
-    bgColor: "#1a1a1a",
-  },
-  {
-    id: "05",
-    name: "SIGNIFIYA'26",
-    year: "2026",
-    description: "SOET's most awaited annual techfest",
-    url: "https://signifiya.in",
-    bgColor: "#222222",
-  },
-  {
-    id: "06",
-    name: "AURA",
-    year: "2026",
-    description: "Adamas University's personal student guide rag bot",
-    url: "https://aura-au-bot.vercel.app",
-    bgColor: "#222222",
-  },
-];
-
 export default function ProjectsSection() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const leftPanelRef = useRef<HTMLDivElement | null>(null);
-  const rightPanelRef = useRef<HTMLDivElement | null>(null);
-  const leftHeadingRef = useRef<HTMLHeadingElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current || !leftPanelRef.current || !rightPanelRef.current) return;
+    const ctx = gsap.context(() => {
+      // Heading animation
+      gsap.from(".projects-heading span", {
+        y: 100,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.1,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: ".projects-heading",
+          start: "top 80%",
+        },
+      });
 
-    const vh = window.innerHeight;
-    const totalHeight = projects.length * vh;
-    const headerHeight = 40; // offset so pinned left panel sits below fixed header (reduced further to shift heading up)
+      // Card staggered entrance
+      gsap.from(".project-card-wrapper", {
+        y: 50,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 70%",
+        },
+      });
+    }, sectionRef);
 
-    // set section and right panel sizes
-    sectionRef.current.style.height = `${totalHeight}px`;
-    rightPanelRef.current.style.position = "absolute";
-    rightPanelRef.current.style.top = "0";
-    rightPanelRef.current.style.right = "0";
-    const isMobile = window.innerWidth < 768;
-    // on mobile use full width so content doesn't appear clipped to the right half
-    rightPanelRef.current.style.width = isMobile ? "100%" : "50%";
-    rightPanelRef.current.style.height = `${totalHeight}px`;
-    rightPanelRef.current.style.overflow = "visible";
-
-    // ensure left panel is offset below the fixed header to avoid being covered
-    leftPanelRef.current.style.top = `${headerHeight}px`;
-    leftPanelRef.current.style.zIndex = "10";
-
-    // entrance for left heading
-    if (leftHeadingRef.current) {
-      gsap.fromTo(leftHeadingRef.current, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power2.out", delay: 0.15 });
-    }
-
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: `top top+=${headerHeight}`,
-      end: `+=${totalHeight - vh}`,
-      pin: leftPanelRef.current,
-      pinSpacing: false,
-      scrub: true,
-      onUpdate: (self) => {
-        const idx = Math.round(self.progress * (projects.length - 1));
-        setActiveIndex(idx);
-      },
-    });
-
-    return () => {
-      st.kill();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section ref={sectionRef} id="portfolio" className="relative w-full bg-white" style={{ height: "100vh", zIndex: 10, overflow: "hidden", scrollMarginTop: "80px" }}>
-      <div ref={leftPanelRef} className="hidden md:flex absolute top-0 left-0 flex-col justify-between bg-white h-full" style={{ width: "50%", zIndex: 2 }}>
-        <div className="px-8 md:px-6 lg:-pt-56  pb-12">
-          <h2 ref={leftHeadingRef} className="text-[10vw] md:text-[7vw] leading-[0.9] font-black uppercase tracking-tighter text-black opacity-0">
-            SELECTED<br />WORKS
+    <section ref={sectionRef} id="portfolio" className="relative w-full bg-white py-24 md:py-32 px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto">
+        {/* Section Heading */}
+        <div className="projects-heading mb-16 md:mb-24">
+          <h2 className="text-[12vw] md:text-[8vw] font-black leading-[0.8] tracking-tighter uppercase text-black">
+            <span className="block">Selected</span>
+            <span className="block">Works</span>
           </h2>
-          <p className="mt-3 text-sm text-zinc-500 font-medium">Scroll through the projects on the right section</p>
-        </div>
-
-        <div className="px-8 md:px-16 pb-10 flex flex-col gap-1">
-          {projects.map((p, i) => (
-            <div key={p.id} className="flex items-center justify-between transition-all duration-300" style={{ opacity: i === activeIndex ? 1 : 0.3, fontWeight: i === activeIndex ? 900 : 500 }}>
-              <span className="text-base uppercase tracking-wide text-black">{p.id} {p.name}</span>
-              <span className="text-sm text-zinc-500">{p.year}</span>
+          <div className="mt-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <p className="text-zinc-500 text-lg md:text-xl max-w-md font-medium">
+              A curated collection of digital experiences built with precision and passion.
+            </p>
+            <div className="flex items-center gap-2 text-sm font-bold tracking-widest text-zinc-400 uppercase">
+              <span className="w-12 h-[1px] bg-zinc-200"></span>
+              {projects.length} PROJECTS
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div ref={rightPanelRef} className="absolute top-0 right-0" style={{ width: "50%" }}>
-        <div className="md:hidden">
-          <div className=" pb-6 bg-white">
-            <h2 className="text-[14vw] leading-[0.9] font-black uppercase tracking-tighter text-black">SELECTED<br />WORKS</h2>
           </div>
         </div>
 
-        {projects.map((project) => (
-          <div key={project.id} className="project-card relative overflow-hidden h-[60vh] md:h-screen" style={{ background: project.bgColor }}>
-            <div className="absolute top-8 left-8 text-white/40 text-sm font-mono">({project.id})</div>
+        {/* Projects Grid */}
+        <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {projects.map((project) => (
+            <div key={project.id} className="project-card-wrapper group">
+              <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden rounded-2xl bg-zinc-100 mb-6">
+                {/* Image Layer */}
+                <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-10 block">
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-all duration-700 ease-out"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-transparent transition-colors duration-500 flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-500 flex flex-col items-center gap-3">
+                      <div className="w-16 h-16 rounded-full bg-white flex items-center justify-center text-black shadow-2xl">
+                        <ArrowUpRight size={32} />
+                      </div>
+                      <span className="text-white font-bold uppercase tracking-widest text-xs drop-shadow-md">View Details</span>
+                    </div>
+                  </div>
+                </Link>
 
-            <a href={project.url} className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white hover:text-black transition-all duration-300 z-10" aria-label={`View ${project.name}`} target={project.url && project.url.startsWith("http") ? "_blank" : undefined} rel={project.url && project.url.startsWith("http") ? "noopener noreferrer" : undefined}>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
+                {/* Top Badge */}
+                <div className="absolute top-6 left-6 z-20 flex gap-2">
+                  <span className="px-3 py-1 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-bold text-black uppercase tracking-widest">
+                    {project.year}
+                  </span>
+                </div>
 
-            <div className="absolute bottom-0 left-0 right-0 px-8 pb-10 text-white">
-              <p className="text-white/50 text-xs uppercase tracking-widest mb-2 font-mono">ard.dev</p>
-              <h3 className="text-[12vw] md:text-[6vw] font-black uppercase leading-[0.9] tracking-tighter mb-4">{project.name}</h3>
-              <p className="text-white/60 text-sm max-w-xs leading-relaxed">{project.description}</p>
-            </div>
+                {/* External Links on Card */}
+                <div className="absolute top-6 right-6 z-20 flex gap-2">
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-sm"
+                    title="GitHub Repository"
+                  >
+                    <Github size={18} />
+                  </a>
+                  <a
+                    href={project.websiteUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-sm"
+                    title="Live Website"
+                  >
+                    <Globe size={18} />
+                  </a>
+                </div>
+              </div>
 
-            {/* image area */}
-            <div className="absolute inset-0">
-              <div data-cursor="project" className="absolute inset-0 group">
-                <a href={project.url || '#'} aria-label={`Open ${project.name}`} className="absolute inset-0 z-20 block" target={project.url && project.url.startsWith("http") ? "_blank" : undefined} rel={project.url && project.url.startsWith("http") ? "noopener noreferrer" : undefined} />
-                <div className="relative w-full h-full overflow-hidden">
-                  {project.id === "01" && (
-                    <Image src="/projects/broskie.png" alt="Broskie.ai screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
-                  )}
-                  {project.id === "02" && (
-                    <Image src="/projects/ratnadipa-port.png" alt="Ratnadipa screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
-                  )}
-                  {project.id === "03" && (
-                    <Image src="/projects/zero-ui2.png" alt="Zero UI screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
-                  )}
-                  {project.id === "04" && (
-                    <Image src="/projects/kryptos-v1.png" alt="Kryptos screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
-                  )}
-                  {project.id === "05" && (
-                    <Image src="/projects/signifiya.png" alt="Signifiya screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
-                  )}
-                  {project.id === "06" && (
-                    <Image src="/projects/aura.png" alt="Aura screenshot" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover filter grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-500 ease-out" />
-                  )}
+              {/* Card Footer */}
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-2xl md:text-3xl font-black uppercase tracking-tighter mb-2 group-hover:text-red-600 transition-colors">
+                    <Link href={`/projects/${project.slug}`}>
+                      {project.name}
+                    </Link>
+                  </h3>
+                  <p className="text-zinc-500 text-sm font-medium leading-relaxed max-w-sm">
+                    {project.description}
+                  </p>
+                </div>
+                <div className="flex gap-1">
+                  {project.tags.slice(0, 2).map(tag => (
+                    <span key={tag} className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest px-2 py-1 border border-zinc-100 rounded">
+                      {tag}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
       </div>
     </section>
   );
