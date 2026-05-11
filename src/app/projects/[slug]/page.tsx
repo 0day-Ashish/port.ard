@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { projects } from "@/data/projects";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 export default function ProjectPage() {
   const { slug } = useParams();
-  const router = useRouter();
+
   const project = projects.find((p) => p.slug === slug);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -54,13 +54,13 @@ export default function ProjectPage() {
     <div ref={containerRef} className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 w-full z-50 px-6 py-8 flex justify-between items-center mix-blend-difference">
-        <button 
-          onClick={() => router.back()}
+        <Link 
+          href="/#portfolio"
           className="flex items-center gap-2 text-white hover:opacity-70 transition-opacity uppercase text-sm font-bold tracking-widest"
         >
           <ArrowLeft size={18} />
           Back
-        </button>
+        </Link>
         <Link href="/" className="text-white font-black text-xl tracking-tighter">
           ARD.DEV
         </Link>

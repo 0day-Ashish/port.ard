@@ -72,7 +72,7 @@ export default function ProjectsSection() {
             <div key={project.id} className="project-card-wrapper group">
               <div className="relative aspect-[4/3] md:aspect-[16/10] overflow-hidden rounded-2xl bg-zinc-100 mb-6">
                 {/* Image Layer */}
-                <Link href={`/projects/${project.slug}`} className="absolute inset-0 z-10 block">
+                <Link href={`/projects/${project.slug}`} data-cursor="project" className="absolute inset-0 z-10 block">
                   <Image
                     src={project.image}
                     alt={project.name}

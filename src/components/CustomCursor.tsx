@@ -1,11 +1,21 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const CustomCursor = () => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const isProjectRef = useRef(false);
   const [enabled, setEnabled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    // Reset cursor state on route change
+    if (cursorRef.current) {
+      isProjectRef.current = false;
+      cursorRef.current.classList.remove("cursor--project");
+    }
+  }, [pathname]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
