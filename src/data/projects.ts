@@ -6,7 +6,7 @@ export interface Project {
   description: string;
   longDescription?: string;
   websiteUrl: string;
-  githubUrl: string;
+  githubUrl?: string;
   image: string;
   bgColor: string;
   tags: string[];
@@ -80,15 +80,14 @@ export const projects: Project[] = [
   },
   {
     id: "06",
-    name: "AURA",
-    slug: "aura",
+    name: "MDROP",
+    slug: "mdrop",
     year: "2026",
-    description: "Adamas University's personal student guide rag bot.",
-    longDescription: "Aura is a sophisticated AI-driven assistant developed specifically for the Adamas University student body. Utilizing Retrieval-Augmented Generation (RAG), Aura can process vast amounts of university-specific documentation—from academic handbooks to administrative policies—and provide instant, accurate answers to student queries. \n\nThe project involved building a custom vector database to store university knowledge and implementing a conversational UI that feels natural and helpful. Aura significantly reduces the administrative burden on university staff by automating the resolution of common student issues. This project highlights my expertise in LLM fine-tuning, vector search, and creating practical AI solutions for complex institutional environments.",
-    websiteUrl: "https://aura-au-bot.vercel.app",
-    githubUrl: "https://github.com/0day-Ashish/aura",
-    image: "/projects/aura.png",
-    bgColor: "#222222",
-    tags: ["AI", "RAG", "Education", "Bot"],
+    description: "A premium streetwear e-commerce platform specializing in customizable apparel.",
+    longDescription: "Mdrop is a dynamic streetwear e-commerce brand designed to empower self-expression through customizable apparel. The platform features an interactive design customizer allowing customers to personalize streetwear pieces in real-time. Built upon a high-performance stack of Next.js and TypeScript, the site is optimized for conversion, page speed, and interactive responsiveness. A robust PostgreSQL database serves as the backend data store for user profiles, order tracking, and custom design metadata, ensuring a scalable and reliable e-commerce infrastructure.",
+    websiteUrl: "https://mrdop.in",
+    image: "/projects/mdrop.png",
+    bgColor: "#0d0d0d",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "E-commerce"],
   },
 ];

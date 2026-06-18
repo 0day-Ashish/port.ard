@@ -117,15 +117,17 @@ export default function ProjectPage() {
                 Visit Website
                 <ExternalLink size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
               </a>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 border-2 border-black px-8 py-4 rounded-full font-bold hover:bg-black hover:text-white transition-all"
-              >
-                <Github size={20} />
-                View Source
-              </a>
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-3 border-2 border-black px-8 py-4 rounded-full font-bold hover:bg-black hover:text-white transition-all"
+                >
+                  <Github size={20} />
+                  View Source
+                </a>
+              )}
             </div>
           </div>
 

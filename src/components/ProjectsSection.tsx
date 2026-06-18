@@ -100,15 +100,17 @@ export default function ProjectsSection() {
 
                 {/* External Links on Card */}
                 <div className="absolute top-6 right-6 z-20 flex gap-2">
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-sm"
-                    title="GitHub Repository"
-                  >
-                    <Github size={18} />
-                  </a>
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md flex items-center justify-center text-black hover:bg-black hover:text-white transition-all shadow-sm"
+                      title="GitHub Repository"
+                    >
+                      <Github size={18} />
+                    </a>
+                  )}
                   <a
                     href={project.websiteUrl}
                     target="_blank"
