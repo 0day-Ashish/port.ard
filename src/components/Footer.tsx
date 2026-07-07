@@ -35,7 +35,7 @@ const Footer = () => {
       {/* Middle: contact links — Instagram left, Email center with GitHub below, LinkedIn right */}
       <div className="flex flex-1 items-center justify-between px-8 md:px-16 py-4 md:py-6 w-full">
         <a
-          href="https://instagram.com/ashishh_rd_"
+          href="https://instagram.com/ashishhikr"
           target="_blank"
           rel="noopener noreferrer"
           className="font-black uppercase  text-white hover:opacity-70 transition-opacity text-xl md:text-2xl lg:text-3xl"

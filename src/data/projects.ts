@@ -90,4 +90,16 @@ export const projects: Project[] = [
     bgColor: "#0d0d0d",
     tags: ["Next.js", "TypeScript", "PostgreSQL", "E-commerce"],
   },
+  {
+    id: "07",
+    name: "ARTSY CAFE",
+    slug: "artsy-cafe",
+    year: "2025",
+    description: "A gorgeous, interactive website for Kolkata's popular art-themed cafe, Artsy.",
+    longDescription: "Artsy Cafe is a premium web application designed and built for Kolkata's most iconic art-themed cafe, Artsy. The website serves as a digital representation of the cafe's aesthetic space, featuring an interactive digital menu, a table reservation booking flow, and a gallery showcasing local art exhibitions hosted at the venue. \n\nThe layout focuses heavily on a minimalist and editorial design system, incorporating smooth page transitions and responsive grid layouts. The system is built using Next.js and Tailwind CSS for optimized load speeds and SEO rankings, enabling local cafe-goers to discover the menu, explore current art exhibitions, and book their visits seamlessly. It exemplifies high-quality front-end engineering custom-tailored for the hospitality and food industry.",
+    websiteUrl: "https://artsy-cafe.vercel.app",
+    image: "/projects/artsy.png",
+    bgColor: "#78350f",
+    tags: ["Next.js", "Tailwind CSS", "UI/UX Design", "Hospitality"],
+  },
 ];
