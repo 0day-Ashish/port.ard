@@ -38,7 +38,7 @@ export default function RootLayout({
               "@type": "Person",
               "name": "Ashish Ranjan Das",
               "alternateName": "arddev",
-              "url": "https://ard.dev",
+              "url": "https://arddev.in",
               "jobTitle": "Full Stack Designer & Developer",
               "sameAs": [
                 "https://github.com/0day-Ashish",
