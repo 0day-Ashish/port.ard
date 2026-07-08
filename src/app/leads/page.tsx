@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { google } from "googleapis";
 import LoginForm from "./login-form";
 import LeadsDashboard from "./leads-dashboard";
+import { ManagerApplication } from "@/lib/types";
 
 // Suppress Node.js zlib.bytesRead deprecation warning thrown by googleapis in development
 if (typeof process !== "undefined") {
@@ -24,15 +25,6 @@ interface Lead {
   timestamp: string;
   topic: string;
   email: string;
-}
-
-export interface ManagerApplication {
-  timestamp: string;
-  name: string;
-  instaHandle: string;
-  previousWorks: string;
-  goalsHobbies: string;
-  birthdate: string;
 }
 
 async function getLeads(): Promise<Lead[]> {
@@ -89,7 +81,7 @@ async function getManagerApplications(): Promise<ManagerApplication[]> {
     const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
     const key = (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
     const spreadsheetId = process.env.SHEET_ID;
-    const range = `ManagerApplications!A:F`;
+    const range = `ManagerApplications!A:G`;
 
     if (!email || !key || !spreadsheetId) {
       console.warn("Google Sheet configuration missing in environment variables.");
@@ -135,6 +127,7 @@ async function getManagerApplications(): Promise<ManagerApplication[]> {
         previousWorks: row[3] || "",
         goalsHobbies: row[4] || "",
         birthdate: row[5] || "",
+        resume: row[6] || "N/A",
       }))
       .filter((app) => app.name && app.instaHandle);
 

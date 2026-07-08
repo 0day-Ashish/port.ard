@@ -10,7 +10,14 @@ export async function loginAction(prevState: any, formData: FormData) {
     return { error: "Please fill in all fields." };
   }
 
-  if (email === "0day.ashish@gmail.com" && password === "Ashish@1206") {
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminEmail || !adminPassword) {
+    return { error: "Admin credentials are not configured in environment variables." };
+  }
+
+  if (email === adminEmail && password === adminPassword) {
     const cookieStore = await cookies();
     cookieStore.set("leads_session", "authenticated", {
       httpOnly: true,

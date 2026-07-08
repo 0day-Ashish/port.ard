@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { logoutAction } from "./actions";
 import Link from "next/link";
-import { Copy, Check, LogOut, FileSpreadsheet, Eye, X, Calendar, Instagram } from "lucide-react";
-import { ManagerApplication } from "./page";
+import { Copy, Check, LogOut, FileSpreadsheet, Eye, X, Calendar, Instagram, FileText } from "lucide-react";
+import { ManagerApplication } from "@/lib/types";
 
 interface Lead {
   timestamp: string;
@@ -337,6 +337,20 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
                           {formatBirthdate(app.birthdate)}
                         </td>
                         <td className="px-6 py-5 text-right flex justify-end gap-3">
+                          {app.resume && app.resume !== "N/A" && (
+                            <>
+                              <a
+                                href={app.resume}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
+                              >
+                                <FileText size={12} />
+                                <span>Resume</span>
+                              </a>
+                              <span className="text-zinc-200">|</span>
+                            </>
+                          )}
                           <button
                             onClick={() => handleCopyHandle(app.instaHandle)}
                             className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
@@ -387,29 +401,48 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
                       </span>
                       <p className="text-base text-zinc-900 font-bold">{app.name}</p>
                     </div>
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-0.5">
-                          Instagram
-                        </span>
-                        <p className="text-sm font-semibold text-zinc-900">{app.instaHandle}</p>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-0.5">
+                            Instagram
+                          </span>
+                          <p className="text-sm font-semibold text-zinc-900">{app.instaHandle}</p>
+                        </div>
+                        <button
+                          onClick={() => handleCopyHandle(app.instaHandle)}
+                          className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
+                        >
+                          {copiedHandle === app.instaHandle ? (
+                            <>
+                              <Check size={12} className="text-green-600" />
+                              <span className="text-green-600">Copied</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy size={12} />
+                              <span>Copy Handle</span>
+                            </>
+                          )}
+                        </button>
                       </div>
-                      <button
-                        onClick={() => handleCopyHandle(app.instaHandle)}
-                        className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
-                      >
-                        {copiedHandle === app.instaHandle ? (
-                          <>
-                            <Check size={12} className="text-green-600" />
-                            <span className="text-green-600">Copied</span>
-                          </>
-                        ) : (
-                          <>
-                            <Copy size={12} />
-                            <span>Copy Handle</span>
-                          </>
-                        )}
-                      </button>
+
+                      {app.resume && app.resume !== "N/A" && (
+                        <div className="border-t border-zinc-100 pt-3">
+                          <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-1">
+                            Resume
+                          </span>
+                          <a
+                            href={app.resume}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-900 hover:underline"
+                          >
+                            <FileText size={13} className="text-zinc-500" />
+                            <span>View Resume</span>
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -444,7 +477,7 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
             {/* Modal Body */}
             <div className="p-6 md:p-8 flex flex-col gap-6">
               {/* Basic metadata grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-b border-zinc-100 pb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 border-b border-zinc-100 pb-6">
                 <div>
                   <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
                     Instagram Handle
@@ -482,6 +515,27 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
                   <span className="text-sm font-medium text-zinc-500">
                     {formatDate(selectedApp.timestamp)}
                   </span>
+                </div>
+
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    Resume
+                  </span>
+                  {selectedApp.resume && selectedApp.resume !== "N/A" ? (
+                    <a
+                      href={selectedApp.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-bold text-zinc-900 hover:underline flex items-center gap-1.5"
+                    >
+                      <FileText size={14} className="text-zinc-500" />
+                      <span>View File</span>
+                    </a>
+                  ) : (
+                    <span className="text-sm font-medium text-zinc-400">
+                      Not uploaded
+                    </span>
+                  )}
                 </div>
               </div>
 

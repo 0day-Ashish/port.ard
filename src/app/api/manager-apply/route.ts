@@ -1,10 +1,17 @@
 import { NextResponse } from "next/server";
 import { google } from "googleapis";
+import { Readable } from "stream";
+import { put } from "@vercel/blob";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { name, instaHandle, previousWorks, goalsHobbies, birthdate } = body;
+    const formData = await request.formData();
+    const name = formData.get("name") as string;
+    const instaHandle = formData.get("instaHandle") as string;
+    const previousWorks = formData.get("previousWorks") as string;
+    const goalsHobbies = formData.get("goalsHobbies") as string;
+    const birthdate = formData.get("birthdate") as string;
+    const resumeFile = formData.get("resume") as File | null;
 
     if (!name || !instaHandle || !previousWorks || !goalsHobbies || !birthdate) {
       return NextResponse.json({ ok: false, error: "Missing required fields" }, { status: 400 });
@@ -15,18 +22,76 @@ export async function POST(request: Request) {
     const spreadsheetId = process.env.SHEET_ID;
 
     if (!email || !key || !spreadsheetId) {
-      return NextResponse.json({ ok: false, error: "Google Sheet credentials not configured" }, { status: 500 });
+      return NextResponse.json({ ok: false, error: "Google Sheet/Drive credentials not configured" }, { status: 500 });
     }
 
     const auth = new google.auth.JWT({
       email,
       key,
-      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+      scopes: [
+        "https://www.googleapis.com/auth/spreadsheets",
+        "https://www.googleapis.com/auth/drive",
+      ],
     });
+
+    // Step 1: Upload resume to Vercel Blob or Google Drive if present
+    let resumeUrl = "N/A";
+    if (resumeFile && resumeFile.size > 0) {
+      const fileName = `${name.replace(/\s+/g, "_")}_Resume_${Date.now()}.${resumeFile.name.split(".").pop()}`;
+
+      if (process.env.BLOB_READ_WRITE_TOKEN) {
+        try {
+          const blob = await put(fileName, resumeFile, {
+            access: "public",
+            token: process.env.BLOB_READ_WRITE_TOKEN,
+          });
+          resumeUrl = blob.url;
+        } catch (blobErr) {
+          console.error("Vercel Blob upload error:", blobErr);
+        }
+      } else {
+        // Fallback to Google Drive
+        try {
+          const drive = google.drive({ version: "v3", auth });
+          const bytes = await resumeFile.arrayBuffer();
+          const buffer = Buffer.from(bytes);
+          const stream = Readable.from(buffer);
+
+          const folderId = process.env.DRIVE_FOLDER_ID;
+          const driveResponse = await drive.files.create({
+            requestBody: {
+              name: fileName,
+              mimeType: resumeFile.type,
+              parents: folderId ? [folderId] : undefined,
+            },
+            media: {
+              mimeType: resumeFile.type,
+              body: stream,
+            },
+            supportsAllDrives: true,
+            fields: "id, webViewLink",
+          });
+
+          const fileId = driveResponse.data.id;
+          if (fileId) {
+            await drive.permissions.create({
+              fileId,
+              requestBody: {
+                role: "reader",
+                type: "anyone",
+              },
+            });
+            resumeUrl = driveResponse.data.webViewLink || "N/A";
+          }
+        } catch (driveErr) {
+          console.error("Google Drive upload error:", driveErr);
+        }
+      }
+    }
 
     const sheets = google.sheets({ version: "v4", auth });
 
-    // Step 1: Ensure ManagerApplications sheet exists
+    // Step 2: Ensure ManagerApplications sheet exists
     const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId });
     const sheetTitle = "ManagerApplications";
     const sheetExists = spreadsheet.data.sheets?.some(
@@ -58,10 +123,11 @@ export async function POST(request: Request) {
         "Previous Works",
         "Goals & Hobbies",
         "Birthdate",
+        "Resume",
       ];
       await sheets.spreadsheets.values.append({
         spreadsheetId,
-        range: `${sheetTitle}!A:F`,
+        range: `${sheetTitle}!A:G`,
         valueInputOption: "RAW",
         insertDataOption: "INSERT_ROWS",
         requestBody: {
@@ -70,21 +136,22 @@ export async function POST(request: Request) {
       });
     }
 
-    // Step 2: Append values
+    // Step 3: Append values
     const values = [
       [
         new Date().toISOString(),
         name,
         instaHandle,
-        previousWorks || "N/A",
+        previousWorks,
         goalsHobbies,
         birthdate,
+        resumeUrl,
       ],
     ];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range: `${sheetTitle}!A:F`,
+      range: `${sheetTitle}!A:G`,
       valueInputOption: "RAW",
       insertDataOption: "INSERT_ROWS",
       requestBody: { values },

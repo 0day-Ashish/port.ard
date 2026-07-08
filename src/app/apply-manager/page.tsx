@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Check, AlertCircle } from "lucide-react";
+import { ArrowLeft, Check, AlertCircle, UploadCloud, FileText, Trash2 } from "lucide-react";
 
 export default function ManagerApplyPage() {
   const [name, setName] = useState("");
@@ -10,7 +10,9 @@ export default function ManagerApplyPage() {
   const [previousWorks, setPreviousWorks] = useState("");
   const [goalsHobbies, setGoalsHobbies] = useState("");
   const [birthdate, setBirthdate] = useState("");
+  const [resume, setResume] = useState<File | null>(null);
 
+  const [formKey, setFormKey] = useState(0);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
@@ -27,18 +29,19 @@ export default function ManagerApplyPage() {
     setLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("instaHandle", instaHandle);
+      formData.append("previousWorks", previousWorks);
+      formData.append("goalsHobbies", goalsHobbies);
+      formData.append("birthdate", birthdate);
+      if (resume) {
+        formData.append("resume", resume);
+      }
+
       const res = await fetch("/api/manager-apply", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          instaHandle,
-          previousWorks,
-          goalsHobbies,
-          birthdate,
-        }),
+        body: formData,
       });
 
       const data = await res.json();
@@ -53,6 +56,8 @@ export default function ManagerApplyPage() {
         setPreviousWorks("");
         setGoalsHobbies("");
         setBirthdate("");
+        setResume(null);
+        setFormKey((prev) => prev + 1);
       } else {
         setStatus({
           type: "error",
@@ -180,11 +185,11 @@ export default function ManagerApplyPage() {
 
         {/* Right Column: Application Form */}
         <div className="bg-zinc-50 border border-zinc-200/60 p-6 md:p-10 rounded-2xl">
-          <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight text-zinc-900 mb-8 border-b border-zinc-200 pb-4">
+          <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight text-zinc-900 mb-8 pb-4">
             Apply for this Role
           </h2>
 
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-8">
+          <form key={formKey} onSubmit={handleSubmit} noValidate className="flex flex-col gap-8">
             {/* Name Input */}
             <div className="flex flex-col relative">
               <label htmlFor="name" className="text-zinc-400 uppercase tracking-widest text-[10px] font-bold">
@@ -258,6 +263,63 @@ export default function ManagerApplyPage() {
               <span className="error-message" aria-live="polite">
                 Please share your previous works or experience.
               </span>
+            </div>
+
+            {/* Resume Upload Input (Optional but preferred) */}
+            <div className="flex flex-col relative">
+              <label className="text-zinc-400 uppercase tracking-widest text-[10px] font-bold mb-2">
+                Resume (Optional)
+              </label>
+              
+              <input
+                id="resume-file"
+                type="file"
+                accept=".pdf,.doc,.docx"
+                onChange={(e) => {
+                  const files = e.target.files;
+                  if (files && files.length > 0) {
+                    setResume(files[0]);
+                  }
+                }}
+                className="hidden"
+              />
+
+              {!resume ? (
+                <label
+                  htmlFor="resume-file"
+                  className="cursor-pointer border border-dashed border-zinc-300 hover:border-zinc-900 rounded-xl p-6 flex flex-col items-center justify-center text-center transition-colors bg-white hover:bg-zinc-50"
+                >
+                  <UploadCloud className="text-zinc-400 mb-2" size={24} />
+                  <span className="text-sm font-semibold text-zinc-900 block mb-0.5">
+                    Click to upload resume
+                  </span>
+                  <span className="text-xs text-zinc-400">
+                    PDF, DOCX up to 10MB
+                  </span>
+                </label>
+              ) : (
+                <div className="border border-zinc-200 rounded-xl p-4 flex items-center justify-between bg-white">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <FileText className="text-zinc-500 shrink-0" size={20} />
+                    <div className="min-w-0">
+                      <p className="text-sm font-bold text-zinc-900 truncate">
+                        {resume.name}
+                      </p>
+                      <p className="text-xs text-zinc-400">
+                        {(resume.size / (1024 * 1024)).toFixed(2)} MB
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setResume(null)}
+                    className="p-2 hover:bg-red-50 text-zinc-400 hover:text-red-600 rounded-lg transition-colors cursor-pointer"
+                    title="Remove file"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Goals & Hobbies Input */}
