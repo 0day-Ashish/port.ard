@@ -26,6 +26,15 @@ interface Lead {
   email: string;
 }
 
+export interface ManagerApplication {
+  timestamp: string;
+  name: string;
+  instaHandle: string;
+  previousWorks: string;
+  goalsHobbies: string;
+  birthdate: string;
+}
+
 async function getLeads(): Promise<Lead[]> {
   try {
     const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
@@ -75,6 +84,67 @@ async function getLeads(): Promise<Lead[]> {
   }
 }
 
+async function getManagerApplications(): Promise<ManagerApplication[]> {
+  try {
+    const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+    const key = (process.env.GOOGLE_PRIVATE_KEY || "").replace(/\\n/g, "\n");
+    const spreadsheetId = process.env.SHEET_ID;
+    const range = `ManagerApplications!A:F`;
+
+    if (!email || !key || !spreadsheetId) {
+      console.warn("Google Sheet configuration missing in environment variables.");
+      return [];
+    }
+
+    const auth = new google.auth.JWT({
+      email,
+      key,
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
+
+    const sheets = google.sheets({ version: "v4", auth });
+
+    // Verify sheet exists to prevent 400 error
+    const spreadsheet = await sheets.spreadsheets.get({ spreadsheetId });
+    const sheetExists = spreadsheet.data.sheets?.some(
+      (s) => s.properties?.title === "ManagerApplications"
+    );
+
+    if (!sheetExists) {
+      return [];
+    }
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId,
+      range,
+    });
+
+    const rows = response.data.values || [];
+
+    if (rows.length <= 1) {
+      return [];
+    }
+
+    // Skip the headers row
+    const applications: ManagerApplication[] = rows
+      .slice(1)
+      .map((row) => ({
+        timestamp: row[0] || "",
+        name: row[1] || "",
+        instaHandle: row[2] || "",
+        previousWorks: row[3] || "",
+        goalsHobbies: row[4] || "",
+        birthdate: row[5] || "",
+      }))
+      .filter((app) => app.name && app.instaHandle);
+
+    return applications.reverse();
+  } catch (err) {
+    console.error("Error fetching manager applications from Google Sheets:", err);
+    return [];
+  }
+}
+
 export default async function LeadsPage() {
   const cookieStore = await cookies();
   const session = cookieStore.get("leads_session")?.value;
@@ -86,5 +156,6 @@ export default async function LeadsPage() {
 
   // Fetch and render Leads Dashboard if authenticated
   const leads = await getLeads();
-  return <LeadsDashboard leads={leads} />;
+  const managerApplications = await getManagerApplications();
+  return <LeadsDashboard leads={leads} managerApplications={managerApplications} />;
 }
