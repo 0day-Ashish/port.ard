@@ -29,6 +29,26 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Ashish Ranjan Das",
+              "alternateName": "arddev",
+              "url": "https://ard.dev",
+              "jobTitle": "Full Stack Designer & Developer",
+              "sameAs": [
+                "https://github.com/0day-Ashish",
+                "https://linkedin.com/in/arddev/",
+                "https://instagram.com/ashishhikr"
+              ]
+            }),
+          }}
+        />
+      </head>
       <body
         className={`${clashGrotesk.variable} antialiased`}
       >
