@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { logoutAction } from "./actions";
 import Link from "next/link";
-import { Copy, Check, LogOut, FileSpreadsheet, Eye, X, Calendar, Instagram, FileText } from "lucide-react";
-import { ManagerApplication } from "@/lib/types";
+import { Copy, Check, LogOut, FileSpreadsheet, Eye, X, Calendar, Instagram, FileText, Phone } from "lucide-react";
+import { ManagerApplication, PortfolioSubmission } from "@/lib/types";
 
 interface Lead {
   timestamp: string;
@@ -16,15 +16,28 @@ interface Lead {
 interface LeadsDashboardProps {
   leads: Lead[];
   managerApplications: ManagerApplication[];
+  portfolioSubmissions: PortfolioSubmission[];
 }
 
-export default function LeadsDashboard({ leads, managerApplications }: LeadsDashboardProps) {
+export default function LeadsDashboard({ leads, managerApplications, portfolioSubmissions }: LeadsDashboardProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"contacts" | "managers">("contacts");
+  const [activeTab, setActiveTab] = useState<"contacts" | "managers" | "portfolio">("contacts");
   const [selectedApp, setSelectedApp] = useState<ManagerApplication | null>(null);
+  const [selectedPortfolioApp, setSelectedPortfolioApp] = useState<PortfolioSubmission | null>(null);
   const [copiedEmail, setCopiedEmail] = useState<string | null>(null);
   const [copiedHandle, setCopiedHandle] = useState<string | null>(null);
+  const [copiedPhone, setCopiedPhone] = useState<string | null>(null);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const handleCopyPhone = async (phone: string) => {
+    try {
+      await navigator.clipboard.writeText(phone);
+      setCopiedPhone(phone);
+      setTimeout(() => setCopiedPhone(null), 2000);
+    } catch (err) {
+      console.error("Failed to copy text: ", err);
+    }
+  };
 
   const handleCopyEmail = async (email: string) => {
     try {
@@ -143,6 +156,18 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
                 </span>
               </div>
             </div>
+            {/* Stat: Portfolios */}
+            <div className="flex items-center gap-3 bg-zinc-50 px-4 py-3 rounded-xl border border-zinc-100 min-w-[170px]">
+              <FileText size={18} className="text-zinc-400" />
+              <div>
+                <span className="text-[9px] text-zinc-400 font-bold uppercase tracking-wider block leading-none mb-1">
+                  Portfolio Submissions
+                </span>
+                <span className="text-lg font-black text-zinc-900 leading-none">
+                  {portfolioSubmissions.length}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -168,11 +193,18 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
           >
             Manager Applications ({managerApplications.length})
           </button>
-        </div>
-
-        {/* ACTIVE TAB CONTENT */}
-        {activeTab === "contacts" ? (
-          /* TAB 1: CONTACT LEADS */
+          <button
+            onClick={() => setActiveTab("portfolio")}
+            className={`pb-4 px-6 font-black uppercase text-xs tracking-wider transition-colors cursor-pointer border-b-2 -mb-[2px] ${
+              activeTab === "portfolio"
+                ? "border-black text-black"
+                : "border-transparent text-zinc-400 hover:text-zinc-900"
+            }`}
+          >
+            Portfolio Submissions ({portfolioSubmissions.length})
+          </button>
+        </div>      
+        {activeTab === "contacts" && (
           leads.length === 0 ? (
             <div className="w-full py-20 border border-dashed border-zinc-200 rounded-2xl flex flex-col items-center justify-center text-center">
               <span className="text-zinc-300 text-5xl mb-4 font-light">^-^</span>
@@ -285,8 +317,9 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
               </div>
             </div>
           )
-        ) : (
-          /* TAB 2: MANAGER APPLICATIONS */
+        )}
+
+        {activeTab === "managers" && (
           managerApplications.length === 0 ? (
             <div className="w-full py-20 border border-dashed border-zinc-200 rounded-2xl flex flex-col items-center justify-center text-center">
               <span className="text-zinc-300 text-5xl mb-4 font-light">^-^</span>
@@ -450,6 +483,207 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
             </div>
           )
         )}
+
+        {activeTab === "portfolio" && (
+          portfolioSubmissions.length === 0 ? (
+            <div className="w-full py-20 border border-dashed border-zinc-200 rounded-2xl flex flex-col items-center justify-center text-center">
+              <span className="text-zinc-300 text-5xl mb-4 font-light">^-^</span>
+              <p className="text-zinc-500 font-medium text-lg uppercase tracking-wide">
+                No submissions found
+              </p>
+              <p className="text-zinc-400 text-sm mt-1">
+                Portfolio details submissions will appear here once submitted.
+              </p>
+            </div>
+          ) : (
+            <div className="w-full overflow-hidden border border-zinc-200 rounded-xl shadow-sm bg-white">
+              {/* Desktop Table View */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full border-collapse text-left">
+                  <thead>
+                    <tr className="bg-zinc-50 border-b border-zinc-200">
+                      <th className="px-6 py-4 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400">
+                        Date & Time
+                      </th>
+                      <th className="px-6 py-4 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400">
+                        Name
+                      </th>
+                      <th className="px-6 py-4 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400">
+                        Profession
+                      </th>
+                      <th className="px-6 py-4 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400">
+                        Instagram
+                      </th>
+                      <th className="px-6 py-4 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400">
+                        Phone
+                      </th>
+                      <th className="px-6 py-4 text-[10px] font-black tracking-[0.2em] uppercase text-zinc-400 text-right">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-zinc-200">
+                    {portfolioSubmissions.map((app, idx) => (
+                      <tr key={idx} className="hover:bg-zinc-50/50 transition-colors">
+                        <td className="px-6 py-5 text-sm text-zinc-500 font-medium">
+                          {formatDate(app.timestamp)}
+                        </td>
+                        <td className="px-6 py-5 text-sm font-bold text-zinc-900">
+                          {app.name}
+                        </td>
+                        <td className="px-6 py-5 text-sm text-zinc-650 font-medium truncate max-w-[180px]" title={app.profession}>
+                          {app.profession}
+                        </td>
+                        <td className="px-6 py-5 text-sm font-semibold text-zinc-900 select-all">
+                          {app.instaHandle}
+                        </td>
+                        <td className="px-6 py-5 text-sm text-zinc-500 font-mono select-all">
+                          {app.phone}
+                        </td>
+                        <td className="px-6 py-5 text-right flex justify-end items-center gap-3">
+                          {app.resume && app.resume !== "N/A" && (
+                            <>
+                              <a
+                                href={app.resume}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
+                              >
+                                <FileText size={12} />
+                                <span>Resume</span>
+                              </a>
+                              <span className="text-zinc-200">|</span>
+                            </>
+                          )}
+                          <button
+                            onClick={() => handleCopyHandle(app.instaHandle)}
+                            className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
+                          >
+                            {copiedHandle === app.instaHandle ? (
+                              <Check size={12} className="text-green-600" />
+                            ) : (
+                              <Copy size={12} />
+                            )}
+                            <span className={copiedHandle === app.instaHandle ? "text-green-600" : ""}>
+                              Insta
+                            </span>
+                          </button>
+                          <span className="text-zinc-200">|</span>
+                          <button
+                            onClick={() => handleCopyPhone(app.phone)}
+                            className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
+                          >
+                            {copiedPhone === app.phone ? (
+                              <Check size={12} className="text-green-600" />
+                            ) : (
+                              <Phone size={12} />
+                            )}
+                            <span className={copiedPhone === app.phone ? "text-green-600" : ""}>
+                              Phone
+                            </span>
+                          </button>
+                          <span className="text-zinc-200">|</span>
+                          <button
+                            onClick={() => setSelectedPortfolioApp(app)}
+                            className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-900 hover:opacity-70 transition-opacity cursor-pointer"
+                          >
+                            <Eye size={13} />
+                            <span>Details</span>
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile List View */}
+              <div className="md:hidden divide-y divide-zinc-200 bg-white">
+                {portfolioSubmissions.map((app, idx) => (
+                  <div key={idx} className="p-6 flex flex-col gap-4">
+                    <div className="flex justify-between items-start gap-4">
+                      <span className="text-[11px] text-zinc-400 font-medium">
+                        {formatDate(app.timestamp)}
+                      </span>
+                      <button
+                        onClick={() => setSelectedPortfolioApp(app)}
+                        className="inline-flex items-center gap-1 text-xs font-black uppercase tracking-wider text-zinc-900 hover:opacity-70 transition-opacity cursor-pointer"
+                      >
+                        <Eye size={12} />
+                        <span>Details</span>
+                      </button>
+                    </div>
+                    <div>
+                      <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-0.5">
+                        Name / Profession
+                      </span>
+                      <p className="text-base text-zinc-900 font-bold">{app.name}</p>
+                      <span className="text-xs text-zinc-500 font-medium block mt-0.5">{app.profession}</span>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-0.5">
+                            Instagram
+                          </span>
+                          <p className="text-sm font-semibold text-zinc-900">{app.instaHandle}</p>
+                        </div>
+                        <button
+                          onClick={() => handleCopyHandle(app.instaHandle)}
+                          className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
+                        >
+                          {copiedHandle === app.instaHandle ? (
+                            <Check size={12} className="text-green-600" />
+                          ) : (
+                            <Copy size={12} />
+                          )}
+                          <span>Copy Insta</span>
+                        </button>
+                      </div>
+
+                      <div className="flex justify-between items-end border-t border-zinc-100 pt-3">
+                        <div>
+                          <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-0.5">
+                            Phone
+                          </span>
+                          <p className="text-sm font-semibold text-zinc-900 font-mono">{app.phone}</p>
+                        </div>
+                        <button
+                          onClick={() => handleCopyPhone(app.phone)}
+                          className="inline-flex items-center gap-1.5 text-xs font-black uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer"
+                        >
+                          {copiedPhone === app.phone ? (
+                            <Check size={12} className="text-green-600" />
+                          ) : (
+                            <Phone size={12} />
+                          )}
+                          <span>Copy Phone</span>
+                        </button>
+                      </div>
+
+                      {app.resume && app.resume !== "N/A" && (
+                        <div className="border-t border-zinc-100 pt-3">
+                          <span className="text-[9px] text-zinc-400 font-black tracking-widest uppercase block mb-1">
+                            Resume
+                          </span>
+                          <a
+                            href={app.resume}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-xs font-bold text-zinc-900 hover:underline"
+                          >
+                            <FileText size={13} className="text-zinc-500" />
+                            <span>View Resume</span>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        )}
       </main>
 
       {/* DETAIL MODAL OVERLAY */}
@@ -564,6 +798,209 @@ export default function LeadsDashboard({ leads, managerApplications }: LeadsDash
             <div className="p-6 border-t border-zinc-100 flex justify-end">
               <button
                 onClick={() => setSelectedApp(null)}
+                className="px-6 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-black uppercase text-xs tracking-wider rounded-xl transition-colors cursor-pointer"
+              >
+                Close Details
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PORTFOLIO DETAIL MODAL OVERLAY */}
+      {selectedPortfolioApp && (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-fade-in">
+          <div className="bg-white w-full max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl shadow-xl flex flex-col border border-zinc-100">
+            {/* Modal Header */}
+            <div className="flex justify-between items-center p-6 border-b border-zinc-100">
+              <div>
+                <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                  Portfolio Details
+                </span>
+                <h3 className="text-2xl font-black uppercase tracking-tight text-zinc-900">
+                  {selectedPortfolioApp.name}
+                </h3>
+                <span className="text-xs text-zinc-500 font-semibold">{selectedPortfolioApp.profession}</span>
+              </div>
+              <button
+                onClick={() => setSelectedPortfolioApp(null)}
+                className="p-2 rounded-full hover:bg-zinc-100 text-zinc-500 hover:text-zinc-950 transition-colors cursor-pointer"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-6 md:p-8 flex flex-col gap-6">
+              {/* Basic metadata grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border-b border-zinc-100 pb-6">
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    Instagram Handle
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-bold text-zinc-900">{selectedPortfolioApp.instaHandle}</span>
+                    <button
+                      onClick={() => handleCopyHandle(selectedPortfolioApp.instaHandle)}
+                      className="text-zinc-400 hover:text-zinc-900 transition-colors"
+                      title="Copy Handle"
+                    >
+                      {copiedHandle === selectedPortfolioApp.instaHandle ? (
+                        <Check size={14} className="text-green-600" />
+                      ) : (
+                        <Copy size={14} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    Phone Number
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-medium text-zinc-900 font-mono">{selectedPortfolioApp.phone}</span>
+                    <button
+                      onClick={() => handleCopyPhone(selectedPortfolioApp.phone)}
+                      className="text-zinc-400 hover:text-zinc-900 transition-colors"
+                      title="Copy Phone"
+                    >
+                      {copiedPhone === selectedPortfolioApp.phone ? (
+                        <Check size={14} className="text-green-600" />
+                      ) : (
+                        <Copy size={14} />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    Applied On
+                  </span>
+                  <span className="text-sm font-medium text-zinc-500">
+                    {formatDate(selectedPortfolioApp.timestamp)}
+                  </span>
+                </div>
+
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    Resume
+                  </span>
+                  {selectedPortfolioApp.resume && selectedPortfolioApp.resume !== "N/A" ? (
+                    <a
+                      href={selectedPortfolioApp.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-bold text-zinc-900 hover:underline flex items-center gap-1.5"
+                    >
+                      <FileText size={14} className="text-zinc-500" />
+                      <span>View File</span>
+                    </a>
+                  ) : (
+                    <span className="text-sm font-medium text-zinc-400">
+                      Not uploaded
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Social Links Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-zinc-100 pb-6">
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    LinkedIn Profile
+                  </span>
+                  {selectedPortfolioApp.linkedin && selectedPortfolioApp.linkedin !== "N/A" ? (
+                    <a
+                      href={selectedPortfolioApp.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-bold text-zinc-900 hover:underline break-all"
+                    >
+                      {selectedPortfolioApp.linkedin}
+                    </a>
+                  ) : (
+                    <span className="text-sm font-medium text-zinc-400">Not provided</span>
+                  )}
+                </div>
+
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-1">
+                    Other Social Profile
+                  </span>
+                  {selectedPortfolioApp.otherSocial && selectedPortfolioApp.otherSocial !== "N/A" ? (
+                    <a
+                      href={selectedPortfolioApp.otherSocial}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-bold text-zinc-900 hover:underline break-all"
+                    >
+                      {selectedPortfolioApp.otherSocial}
+                    </a>
+                  ) : (
+                    <span className="text-sm font-medium text-zinc-400">Not provided</span>
+                  )}
+                </div>
+              </div>
+
+              {/* About Yourself */}
+              <div>
+                <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-2">
+                  About Yourself
+                </span>
+                <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl text-sm md:text-base text-zinc-700 leading-relaxed font-medium whitespace-pre-wrap">
+                  {selectedPortfolioApp.about}
+                </div>
+              </div>
+
+              {/* Skills / Stacks */}
+              <div>
+                <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-2">
+                  Skills / Stacks
+                </span>
+                <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl text-sm md:text-base text-zinc-700 leading-relaxed font-medium whitespace-pre-wrap">
+                  {selectedPortfolioApp.skills}
+                </div>
+              </div>
+
+              {/* Services Offered */}
+              <div>
+                <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-2">
+                  Services Offered
+                </span>
+                <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl text-sm md:text-base text-zinc-700 leading-relaxed font-medium whitespace-pre-wrap">
+                  {selectedPortfolioApp.services}
+                </div>
+              </div>
+
+              {/* Projects/Works */}
+              <div>
+                <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-2">
+                  Works / Projects
+                </span>
+                <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl text-sm md:text-base text-zinc-700 leading-relaxed font-medium whitespace-pre-wrap">
+                  {selectedPortfolioApp.projects}
+                </div>
+              </div>
+
+              {/* Testimonials */}
+              {selectedPortfolioApp.testimonials && selectedPortfolioApp.testimonials !== "N/A" && (
+                <div>
+                  <span className="text-zinc-400 uppercase tracking-widest text-[9px] font-bold block mb-2">
+                    Testimonials / Credibilities
+                  </span>
+                  <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl text-sm md:text-base text-zinc-700 leading-relaxed font-medium whitespace-pre-wrap">
+                    {selectedPortfolioApp.testimonials}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-6 border-t border-zinc-100 flex justify-end">
+              <button
+                onClick={() => setSelectedPortfolioApp(null)}
                 className="px-6 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-black uppercase text-xs tracking-wider rounded-xl transition-colors cursor-pointer"
               >
                 Close Details
